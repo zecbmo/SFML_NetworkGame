@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayerCharacter.h"
+#include <SFML\Network.hpp>
 
 /* The Networked Character
 *
@@ -22,5 +23,16 @@ public:
 
 	void UpdatePosition(float x, float y);
 	void Update(float dt) {};
+
+	sf::IpAddress GetIP() { return m_OriginIP; };
+	void SetIP(sf::IpAddress IP) { m_OriginIP = IP; };
+	unsigned short int GetThePort() { return m_OriginPort; };
+	void SetThePort(unsigned short int Port) { m_OriginPort = Port; };
+
+
+
+private:
+	sf::IpAddress m_OriginIP;
+	unsigned short int m_OriginPort;
 };
 

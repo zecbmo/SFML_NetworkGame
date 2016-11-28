@@ -58,13 +58,19 @@ void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHei
 	else if(HostOrClient == 'C')
 	{
 		m_HasAuthority = false;
+
+		std::cout << "Please Select Port Number..." << std::endl;
+		unsigned short int Port;
+		std::cin >> Port;
+
+		m_ClientPortNumber = Port;
 	}
 	else
 	{
 		error::ErrorMessage("Invalid Choice when selecting Client/Host.");
 	}
 
-	m_ClientPortNumber = CLIENT_PORT_NUMBER;
+	
 	m_ServerPortNumber = SERVER_PORT_NUMBER;
 	
 	//Set the initial player count (ie just the host)
@@ -82,7 +88,7 @@ void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHei
 
 	}
 	
-	m_UDPSocket.setBlocking(false);
+	
 }
 
 void Application::Update(float dt)
@@ -195,6 +201,8 @@ void Application::ClientSetUp()
 	}
 
 	m_UDPSocket.bind(m_ClientPortNumber);
+	m_Selector.add(m_UDPSocket);
+
 }
 
 void Application::ServerUpdate()
@@ -212,15 +220,17 @@ void Application::ServerUpdate()
 			//if the connections is successful
 			if (m_Listener.accept(*NewClient) == sf::Socket::Done)
 			{
+				//Check if max players has been met
 				if (m_PlayerIDTracker > 4)
 				{
-					//Send Welcome Message and player ID
+					//Send Failure message
 					std::string ToMany = "To Many Players on Server! Please Try Later";
 					sf::Packet Packet;
 					Packet << ToMany << m_PlayerIDTracker;
 					NewClient->send(Packet);	
 					NewClient->disconnect();
 				}
+				else
 				{
 					//Add new connection to TCP list
 					m_ClientTCPSockets.push_back(NewClient);
@@ -252,6 +262,12 @@ void Application::ServerUpdate()
 						break;
 					}
 
+					//Add the origin IP and port to the newtorked Char
+					NewCharacter->SetIP(NewClient->getRemoteAddress());
+					NewCharacter->SetThePort(NewClient->getRemotePort());
+
+					//Create UDP Socket Based on this Address
+
 					sf::Uint32 col;
 					sf::Packet RecieveColour;
 					NewClient->receive(RecieveColour);
@@ -281,17 +297,22 @@ void Application::ServerUpdate()
 			sf::Packet Packet;
 			Packet << PlayerPacket;
 
-			sf::IpAddress ip(CLIENT_IP);
-			m_UDPSocket.receive(Packet, ip, m_ClientPortNumber);
+			sf::IpAddress Sender;
+			unsigned short Port;
+			m_UDPSocket.receive(Packet, Sender, Port);
 
 			if (Packet >> PlayerPacket)
 			{
-				//Check the id against the client and update
+				//Check the id against the client and update or send the new position to the clients
 				for (auto iter : m_NetworkCharacterList)
 				{
 					if (iter->GetID() == PlayerPacket.ID)
 					{
 						iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
+					}
+					else
+					{
+						m_UDPSocket.send(Packet, iter->GetIP(), iter->GetThePort());
 					}
 				}
 			}
@@ -315,6 +336,52 @@ void Application::ClientUpdate()
 
 	sf::IpAddress ip(SERVER_IP);
 	m_UDPSocket.send(Packet, ip, m_ServerPortNumber);
+
+	//Listen to the UDP Socket
+	if (m_Selector.isReady(m_UDPSocket))
+	{
+		PlayerUpdatePacket PlayerPacket;
+
+		sf::Packet Packet;
+		Packet << PlayerPacket;
+
+		sf::IpAddress Sender;
+		unsigned short Port;
+		m_UDPSocket.receive(Packet, Sender, Port);
+
+		if (Packet >> PlayerPacket) 
+		{
+			//A bool to check against the ID if the player already exists
+			bool IsNewPlayer = true;
+			
+			//Check the id against the client and update or send the new position to the clients
+			for (auto iter : m_NetworkCharacterList)
+			{
+				if (iter->GetID() == PlayerPacket.ID)
+				{
+					iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
+
+					//This player exists... we dont need to add them
+					IsNewPlayer = false;
+				}
+				
+			}
+
+			if (IsNewPlayer)
+			{
+				//Create a new networked Character
+				NetworkedCharacter* NewCharacter = new NetworkedCharacter;
+				sf::Vector2f pos = sf::Vector2f(PlayerPacket.XPos, PlayerPacket.YPos);
+		
+				
+				NewCharacter->Init(m_PlayerIDTracker, kRed, pos, "Assets/Textures/Chars.png", DebugScreen);
+				m_NetworkCharacterList.push_back(NewCharacter);
+				
+			}
+
+		
+		}
+	}
 
 }
 
