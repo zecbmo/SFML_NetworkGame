@@ -2,7 +2,7 @@
 #include<SFML\Graphics.hpp>
 #include "DebugUI.h"
 enum PlayerColour { kRed, kPurple, kBlack, kGreen };
-enum PlayerDirection {kNorth, kSouth, kEast, kWest, kNorthEast, kNorthWest, kSouthEast, kSouthWest};
+enum PlayerDirection {kNorth, kSouth, kEast, kWest, kNorthEast, kNorthWest, kSouthEast, kSouthWest, kStill};
 
 
 
@@ -28,7 +28,7 @@ public:
 	inline sf::Uint8 GetID() { return m_ID; };
 	inline sf::Uint8 GetDir() { return  (sf::Uint8)m_Dir; };
 
-
+	
 
 protected:
 
@@ -52,8 +52,13 @@ protected:
 	DebugUI* m_Debug;
 	sf::Text* PlayerPositionText;
 
-	//Packet
-	
+
+	void UpdateSprite(int SpritePos,float dt);
+	void UpdateSpriteState(float dt);
+	//animating the sprites
+	float m_FramesPerSecond;
+	float m_AnimCounter;
+	int m_CurrentSpritePos;
 	
 };
 

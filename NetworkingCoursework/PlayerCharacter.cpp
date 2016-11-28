@@ -57,6 +57,9 @@ void PlayerCharacter::Init(int PlayerID, PlayerColour Colour, sf::Vector2f Start
 	//Set Ref to Debug UI
 	m_Debug = &DebugScreen;
 	//PlayerPositionText = m_Debug->AddToDebugScreen("player one position", 0, 0, kYellowColour);
+
+	//Animated Sprite Setup
+	m_FramesPerSecond = 8;
 }
 
 void PlayerCharacter::Update(float dt)
@@ -80,26 +83,98 @@ void PlayerCharacter::Movement(float dt)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		m_Sprite.move(-m_Speed * dt, 0);
+		m_Dir = kWest;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{	
 		m_Sprite.move(m_Speed* dt, 0);
+		m_Dir = kEast;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		m_Sprite.move(0, m_Speed * dt);
+		m_Dir = kSouth;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	else  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		m_Sprite.move(0, -m_Speed* dt);
+		m_Dir = kNorth;
+	}
+	else
+	{
+		m_Dir = kStill;
 	}
 
 
-
-
+	UpdateSpriteState(dt);
 }
 
 void PlayerCharacter::Render(sf::RenderWindow* Window)
 {
-	Window->draw(m_Sprite);
+	Window->draw(m_Sprite);	
+}
+
+void PlayerCharacter::UpdateSprite(int SpritePos, float dt)
+{
+	
+	if (m_AnimCounter > 1)
+	{
+		if (SpritePos == 0)
+		{
+			m_CurrentSpritePos = 0;
+		}
+		else if (SpritePos == m_CurrentSpritePos)
+		{
+			m_CurrentSpritePos = SpritePos + m_Texture_Width;
+		}
+		else
+		{
+			m_CurrentSpritePos = SpritePos;
+		}
+	
+		m_AnimCounter = 0;
+
+	}
+
+	m_Sprite.setTextureRect(sf::IntRect(m_CurrentSpritePos, m_Sprite_Y_Pos, m_Texture_Width, m_Texture_Height));
+
+	m_AnimCounter += m_FramesPerSecond*dt;
+}
+
+
+void PlayerCharacter::UpdateSpriteState(float dt)
+{
+
+	switch (m_Dir)
+	{
+	case kNorth:
+		UpdateSprite(43, dt);
+		break;
+	case kSouth:
+		UpdateSprite(14, dt);
+		break;
+	case kEast:
+		UpdateSprite(98, dt);
+		break;
+	case kWest:
+		UpdateSprite(70, dt);
+		break;
+	case kNorthEast:
+		UpdateSprite(98, dt);
+		break;
+	case kNorthWest:
+		UpdateSprite(70, dt);
+		break;
+	case kSouthEast:
+		UpdateSprite(98, dt);
+		break;
+	case kSouthWest:
+		UpdateSprite(70, dt);
+		break;
+	case kStill:
+		UpdateSprite(0, dt);
+		break;
+	default:
+		break;
+	}
 }

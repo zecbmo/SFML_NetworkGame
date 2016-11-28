@@ -22,17 +22,18 @@ public:
 	~NetworkedCharacter();
 
 	void UpdatePosition(float x, float y);
-	void Update(float dt) {};
+	void Update(float dt) { UpdateSpriteState(dt); };
 
 	sf::IpAddress GetIP() { return m_OriginIP; };
 	void SetIP(sf::IpAddress IP) { m_OriginIP = IP; };
-	unsigned short int GetThePort() { return m_OriginPort; };
-	void SetThePort(unsigned short int Port) { m_OriginPort = Port; };
+	unsigned short GetThePort() { return m_OriginPort; };
+	void SetThePort(unsigned short Port) { m_OriginPort = Port; };
 
+	inline void SetDir(PlayerDirection Dir) { m_Dir = Dir; };
 
 
 private:
 	sf::IpAddress m_OriginIP;
-	unsigned short int m_OriginPort;
+	unsigned short m_OriginPort;
 };
 

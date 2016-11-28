@@ -1,5 +1,6 @@
 #include "Application.h"
 #include <iostream>
+#include <stdint.h>
 
 sf::Packet& operator <<(sf::Packet& packet, const PlayerUpdatePacket& m)
 {
@@ -88,7 +89,7 @@ void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHei
 
 	}
 	
-	
+	m_UDPSocket.setBlocking(false);
 }
 
 void Application::Update(float dt)
@@ -104,6 +105,11 @@ void Application::Update(float dt)
 
 	//Update Game
 	PlayerCharacter.Update(dt);
+	for (auto iter : m_NetworkCharacterList)
+	{
+		iter->Update(dt);
+	}
+
 	DebugScreen.Update();
 }
 
@@ -139,6 +145,7 @@ void Application::ServerSetUp()
 void Application::ClientSetUp()
 {
 	//try to connect with TCP to the Server
+
 	sf::Socket::Status status = m_ClientSideTCPSocket.connect(SERVER_IP, m_ServerPortNumber);
 	if (status != sf::Socket::Done)
 	{
@@ -193,7 +200,8 @@ void Application::ClientSetUp()
 		sf::Uint32 col = PlayerCharacter.GetColour();
 
 		sf::Packet ColourPacket;
-		ColourPacket << col;
+		unsigned short UDPPort = m_ClientPortNumber;
+		ColourPacket << col << UDPPort;
 		m_ClientSideTCPSocket.send(ColourPacket);
 		
 		//Populate with other Characters
@@ -201,6 +209,7 @@ void Application::ClientSetUp()
 	}
 
 	m_UDPSocket.bind(m_ClientPortNumber);
+	
 	m_Selector.add(m_UDPSocket);
 
 }
@@ -263,21 +272,29 @@ void Application::ServerUpdate()
 					}
 
 					//Add the origin IP and port to the newtorked Char
-					NewCharacter->SetIP(NewClient->getRemoteAddress());
-					NewCharacter->SetThePort(NewClient->getRemotePort());
+					
 
 					//Create UDP Socket Based on this Address
 
 					sf::Uint32 col;
 					sf::Packet RecieveColour;
+					unsigned short UDPPort;
 					NewClient->receive(RecieveColour);
+
 					
-					if(RecieveColour >> col)
+					if(RecieveColour >> col >> UDPPort)
 					{
+
 						NewCharacter->Init(m_PlayerIDTracker, (PlayerColour)col, pos, "Assets/Textures/Chars.png", DebugScreen);
+
+						NewCharacter->SetIP(NewClient->getRemoteAddress());
+						NewCharacter->SetThePort(UDPPort);
+
 						m_NetworkCharacterList.push_back(NewCharacter);
 					}
-					//Tell Clients to Add new networked character
+
+					//Tell Clients to Add The Hoset networked character
+				
 
 					//update tracker number
 					m_PlayerIDTracker++;
@@ -292,31 +309,54 @@ void Application::ServerUpdate()
 		{
 			//Recieve packet from client
 
-			PlayerUpdatePacket PlayerPacket;
+			
 
-			sf::Packet Packet;
-			Packet << PlayerPacket;
-
-			sf::IpAddress Sender;
-			unsigned short Port;
-			m_UDPSocket.receive(Packet, Sender, Port);
-
-			if (Packet >> PlayerPacket)
+			while (true)
 			{
-				//Check the id against the client and update or send the new position to the clients
-				for (auto iter : m_NetworkCharacterList)
+				PlayerUpdatePacket PlayerPacket;
+
+				sf::Packet Packet;
+				//Packet << PlayerPacket;
+
+				sf::IpAddress Sender;
+				unsigned short Port;
+
+				if (m_UDPSocket.receive(Packet, Sender, Port) != sf::Socket::Done)
 				{
-					if (iter->GetID() == PlayerPacket.ID)
+					break;
+				}
+
+				if (Packet >> PlayerPacket)
+				{
+					//Check the id against the client and update or send the new position to the clients
+					for (auto iter : m_NetworkCharacterList)
 					{
-						iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
-					}
-					else
-					{
-						m_UDPSocket.send(Packet, iter->GetIP(), iter->GetThePort());
+						if (iter->GetID() == PlayerPacket.ID)
+						{
+							iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
+							iter->SetDir((PlayerDirection)PlayerPacket.Dir);
+						}
+						else
+						{
+							m_UDPSocket.send(Packet, iter->GetIP(), iter->GetThePort());
+						}
+
+						PlayerUpdatePacket PlayerPacket;
+
+						PlayerPacket.XPos = PlayerCharacter.GetXPos();
+						PlayerPacket.YPos = PlayerCharacter.GetYPos();
+						PlayerPacket.ID = PlayerCharacter.GetID();
+						PlayerPacket.Dir = PlayerCharacter.GetDir();
+
+
+						sf::Packet InitPacket;
+						InitPacket << PlayerPacket;
+
+
+						m_UDPSocket.send(InitPacket, iter->GetIP(), iter->GetThePort());
 					}
 				}
 			}
-
 		}
 	}
 }
@@ -338,48 +378,58 @@ void Application::ClientUpdate()
 	m_UDPSocket.send(Packet, ip, m_ServerPortNumber);
 
 	//Listen to the UDP Socket
-	if (m_Selector.isReady(m_UDPSocket))
+
+	sf::Time WaitTime = sf::microseconds(1); //we dont need to block.. just keep checking
+	if (m_Selector.wait(WaitTime))
 	{
-		PlayerUpdatePacket PlayerPacket;
-
-		sf::Packet Packet;
-		Packet << PlayerPacket;
-
-		sf::IpAddress Sender;
-		unsigned short Port;
-		m_UDPSocket.receive(Packet, Sender, Port);
-
-		if (Packet >> PlayerPacket) 
+		if (m_Selector.isReady(m_UDPSocket))
 		{
-			//A bool to check against the ID if the player already exists
-			bool IsNewPlayer = true;
-			
-			//Check the id against the client and update or send the new position to the clients
-			for (auto iter : m_NetworkCharacterList)
+			while (true)
 			{
-				if (iter->GetID() == PlayerPacket.ID)
+				PlayerUpdatePacket PlayerPacket;
+
+				sf::Packet Packet;
+				//Packet << PlayerPacket;
+
+				sf::IpAddress Sender;
+				unsigned short Port;
+				if (m_UDPSocket.receive(Packet, Sender, Port) != sf::Socket::Done)
 				{
-					iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
-
-					//This player exists... we dont need to add them
-					IsNewPlayer = false;
+					break;
 				}
-				
-			}
 
-			if (IsNewPlayer)
-			{
-				//Create a new networked Character
-				NetworkedCharacter* NewCharacter = new NetworkedCharacter;
-				sf::Vector2f pos = sf::Vector2f(PlayerPacket.XPos, PlayerPacket.YPos);
-		
-				
-				NewCharacter->Init(m_PlayerIDTracker, kRed, pos, "Assets/Textures/Chars.png", DebugScreen);
-				m_NetworkCharacterList.push_back(NewCharacter);
-				
-			}
+				if (Packet >> PlayerPacket)
+				{
+					//A bool to check against the ID if the player already exists
+					bool IsNewPlayer = true;
 
-		
+					//Check the id against the client and update or send the new position to the clients
+					for (auto iter : m_NetworkCharacterList)
+					{
+						if (iter->GetID() == PlayerPacket.ID)
+						{
+							iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
+							iter->SetDir((PlayerDirection)PlayerPacket.Dir);
+							//This player exists... we dont need to add them
+							IsNewPlayer = false;
+						}
+
+					}
+
+					if (IsNewPlayer)
+					{
+						//Create a new networked Character
+						NetworkedCharacter* NewCharacter = new NetworkedCharacter;
+						sf::Vector2f pos = sf::Vector2f(PlayerPacket.XPos, PlayerPacket.YPos);
+
+
+						NewCharacter->Init(PlayerPacket.ID, kRed, pos, "Assets/Textures/Chars.png", DebugScreen);
+						m_NetworkCharacterList.push_back(NewCharacter);
+
+					}
+				}
+
+			}
 		}
 	}
 
