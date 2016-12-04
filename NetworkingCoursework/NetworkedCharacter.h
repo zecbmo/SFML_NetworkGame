@@ -22,7 +22,7 @@ struct TimePositionStruct
 {
 	sf::Vector2f Position;
 	float ServerTimeStampInSeconds;
-	float SenderStampInSeconds; //May not be needed but may help later for Lerping
+	
 };
 
 
@@ -32,9 +32,8 @@ public:
 	NetworkedCharacter();
 	~NetworkedCharacter();
 
-	void UpdatePosition(sf::Clock& Clock);
-	void UpdateTestPosiiton();
-	void Update(float dt);
+	
+	void Update(float dt, float GameTime);
 
 	sf::IpAddress GetIP() { return m_OriginIP; };
 	void SetIP(sf::IpAddress IP) { m_OriginIP = IP; };
@@ -46,7 +45,7 @@ public:
 	inline void SetServerLatency(float ServerLat) { m_ServerLatency = m_ServerLatency; };
 	inline float GetServerLatency() { return m_ServerLatency;};
 
-	void AddToPredictionList(float x, float y, float TimeStamp);
+	void AddToPredictionList(float x, float y, float TimeStamp, sf::Clock* Clock);
 	
 
 private:
@@ -54,14 +53,15 @@ private:
 	unsigned short m_OriginPort;
 	float m_ServerLatency;
 
-	std::list<TimePositionStruct*> m_PredictionList;
-	TimePositionStruct PredictNextMovement(sf::Clock &Clock);
-	void GetLatestPositions(TimePositionStruct& OUT First, TimePositionStruct&  OUT Second);
-	void LerpToExpectedPosition(TimePositionStruct Expected, sf::Clock& Clock);
+	TimePositionStruct m_PredictionList[2];
+
+	void UpdateLerpValues(sf::Clock* Clock);
 	sf::Vector2f LerpFunction(sf::Vector2f Start, sf::Vector2f End, float Alpha);
 
-	float m_PredictedX;
-	float m_PredictedY;
+	sf::Vector2f m_LerpStartPos;
+	sf::Vector2f m_LerpEndPos;
+	float m_ExpectedTimeToReachEnd;
+
 
 };
 

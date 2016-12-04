@@ -11,121 +11,67 @@ NetworkedCharacter::~NetworkedCharacter()
 {
 }
 
-void NetworkedCharacter::UpdatePosition(sf::Clock& Clock)
+void NetworkedCharacter::Update(float dt, float GameTime)
 {
-	//TimePositionStruct ExpectedValues = PredictNextMovement(Clock);
-	//LerpToExpectedPosition(ExpectedValues, Clock);
+	float Alpha = GameTime / m_ExpectedTimeToReachEnd;
+	m_LerpStartPos = LerpFunction(m_LerpStartPos, m_LerpEndPos, Alpha);
 
-	if (!m_PredictionList.empty())
-	{
-		auto iter = m_PredictionList.begin();
-
-		m_PredictedX = (*iter)->Position.x;
-		m_PredictedY = (*iter)->Position.y;
-	}
-
-	m_Sprite.setPosition(sf::Vector2f(m_PredictedX, m_PredictedY));
-}
-
-void NetworkedCharacter::UpdateTestPosiiton()
-{
-	m_Sprite.setPosition(500,500);
-}
-
-void NetworkedCharacter::Update(float dt)
-{
 	UpdateSpriteState(dt);
+
+	m_Sprite.setPosition(m_LerpStartPos);
+	
 }
 
-void NetworkedCharacter::AddToPredictionList(float x, float y, float TimeStamp)
+void NetworkedCharacter::AddToPredictionList(float x, float y, float TimeStamp, sf::Clock* Clock)
 {
-	//Get Rid Of Values If it is too big
 	
-
 	//Create new Timstruct
-	TimePositionStruct* NewValue = new TimePositionStruct;
-	NewValue->Position = sf::Vector2f(x, y);
-	NewValue->ServerTimeStampInSeconds = TimeStamp;
+	TimePositionStruct NewValue;
+	NewValue.Position = sf::Vector2f(x, y);
+	NewValue.ServerTimeStampInSeconds = TimeStamp;
 
 	//Find where it should go in the list
-	int Tracker = 0;
-	for (auto iter : m_PredictionList)
+	for (int i = 0; i < 2; i++)
 	{
-		float TimeCheck = iter->SenderStampInSeconds;
+		float TimeCheck = m_PredictionList[i].ServerTimeStampInSeconds;
 
 		if (TimeStamp > TimeCheck)
 		{
-			//this is the positon we want to insert the list
-			break;
+			if (i == 0)
+			{
+				TimePositionStruct Reorder = m_PredictionList[i];
+				m_PredictionList[1] = Reorder;
+				m_PredictionList[0] = NewValue;
+			}
+			else
+			{
+				m_PredictionList[i] = NewValue;
+			}
 		}
 
-		Tracker++;
+	
 	}
 
-	//The the new values to the list
-	auto IterPosition = m_PredictionList.begin();
-	std::advance(IterPosition, Tracker);
-	m_PredictionList.insert(IterPosition, NewValue);
-
-
+	UpdateLerpValues(Clock);
 }
 
-TimePositionStruct NetworkedCharacter::PredictNextMovement(sf::Clock &Clock)
+void NetworkedCharacter::UpdateLerpValues(sf::Clock* Clock)
 {
-	//get The two latest positions/times
-	TimePositionStruct First, Second , Expected;
-	GetLatestPositions(First, Second);
+	//The Current position will be the Starting point of the Lerp
+	m_LerpStartPos = m_Sprite.getPosition();
 
-	//Get The expected position from the two previous
-	sf::Vector2f Velocity =  First.Position - Second.Position;
-	sf::Vector2f ExpectedPosition = First.Position + Velocity;
+	//Get the difference betweeb the two positions
+	sf::Vector2f Pos1 = m_PredictionList[0].Position;
+	sf::Vector2f Pos2 = m_PredictionList[1].Position;
+	
+	m_LerpEndPos = Pos1 + (Pos2 - Pos1);
 
-	//Get CurrentTime ---- This allows us to get the alpha (for how far we should predict ahead)
-	float CurrentTime = Clock.getElapsedTime().asSeconds();
-	//Expected Time to be at Expected Position
-	float ExpectedTime = (First.ServerTimeStampInSeconds - Second.ServerTimeStampInSeconds) + CurrentTime;
+	//Get the time difference between the messages
+	float TimeDifferenceBetweenMessages = m_PredictionList[0].ServerTimeStampInSeconds - m_PredictionList[1].ServerTimeStampInSeconds;
 
-	//Movement returned is the exptect movement time
-	Expected.Position = ExpectedPosition;
-	Expected.ServerTimeStampInSeconds = ExpectedTime;
-
-	return Expected;
-}
-
-void NetworkedCharacter::GetLatestPositions(TimePositionStruct& OUT First, TimePositionStruct&  OUT Second)
-{
-	//Possible better way of doing this
-	for (auto iter : m_PredictionList)
-	{
-		if (iter == *m_PredictionList.begin())
-		{
-			First = *iter;
-		}
-
-		if (iter == *m_PredictionList.begin() + 1)
-		{
-			Second = *iter;
-		}
-	}
-}
-
-void NetworkedCharacter::LerpToExpectedPosition(TimePositionStruct Expected, sf::Clock& Clock)
-{
-	//get The current position of the sprite
-	sf::Vector2f CurrentPosition = m_Sprite.getPosition();
-
-	//get Alpha based on the Expected time and current time
-	float Alpha = Clock.getElapsedTime().asSeconds() / Expected.SenderStampInSeconds;
-
-	//Lerp from Current potition to Expected position
-	sf::Vector2f NewPos = LerpFunction(CurrentPosition, Expected.Position, Alpha);
-
-	//Set the position
-	m_PredictedX = NewPos.x;
-	m_PredictedY = NewPos.y;
+	m_ExpectedTimeToReachEnd = Clock->getElapsedTime().asSeconds() + TimeDifferenceBetweenMessages;
 
 }
-
 sf::Vector2f NetworkedCharacter::LerpFunction(sf::Vector2f Start, sf::Vector2f End, float Alpha)
 {
 	return Start + (End - Start) * Alpha;

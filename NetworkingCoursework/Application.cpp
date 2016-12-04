@@ -139,10 +139,7 @@ void Application::Update(float dt)
 	PlayerCharacter.Update(dt);
 	for (auto iter : m_NetworkCharacterList)
 	{
-		iter->UpdatePosition(LocalGameClock);
-		//iter->UpdateTestPosiiton();
-		iter->Update(dt);
-
+		iter->Update(dt, LocalGameClock.getElapsedTime().asSeconds());
 	}
 
 	DebugScreen.Update();
@@ -499,7 +496,7 @@ void Application::ServerManagePacketsfromUDPSocket()
 			{
 				if (iter->GetID() == PlayerPacket.ID)
 				{
-					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp);
+					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp, &LocalGameClock);
 					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
 				}
 				else
@@ -553,7 +550,7 @@ void Application::ClientManagePacketsfromUDPSocket()
 			{
 				if (iter->GetID() == PlayerPacket.ID)
 				{
-					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp);
+					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp, &LocalGameClock);
 					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
 					//This player exists... we dont need to add them
 					IsNewPlayer = false;
