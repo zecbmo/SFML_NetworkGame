@@ -5,11 +5,11 @@
 //player packet overloads
 sf::Packet& operator <<(sf::Packet& packet, const PlayerUpdatePacket& m)
 {
-	return packet << m.XPos << m.YPos << m.Dir << m.ID << m.PlayersColour;
+	return packet << m.XPos << m.YPos << m.Dir << m.ID << m.PlayersColour << m.ServerTimeStamp;
 }
 sf::Packet& operator >>(sf::Packet& packet, PlayerUpdatePacket& m)
 {
-	return packet >> m.XPos >> m.YPos >> m.Dir >> m.ID >> m.PlayersColour;
+	return packet >> m.XPos >> m.YPos >> m.Dir >> m.ID >> m.PlayersColour >> m.ServerTimeStamp;
 }
 //Welcome Message Overloads
 sf::Packet& operator <<(sf::Packet& packet, const WelcomePacket& m)
@@ -110,6 +110,7 @@ void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHei
 
 	m_TimeOut = sf::seconds(1.0);
 	m_UDPSocket.setBlocking(false);
+	m_NetworkedUpdatesSpeed = 0.2f;
 }
 
 void Application::Update(float dt)
@@ -138,7 +139,10 @@ void Application::Update(float dt)
 	PlayerCharacter.Update(dt);
 	for (auto iter : m_NetworkCharacterList)
 	{
+		iter->UpdatePosition(LocalGameClock);
+		//iter->UpdateTestPosiiton();
 		iter->Update(dt);
+
 	}
 
 	DebugScreen.Update();
@@ -336,21 +340,26 @@ void Application::ServerUpdate()
 
 void Application::ClientUpdate()
 {
-	PlayerUpdatePacket PlayerPacket;
+	//if the NetworkClock is greater that the Network update time then reset and send sevrer message
+	if (m_NetworkUpdateClock.getElapsedTime().asSeconds() > m_NetworkedUpdatesSpeed)
+	{
+		PlayerUpdatePacket PlayerPacket;
 
-	PlayerPacket.XPos = PlayerCharacter.GetXPos();
-	PlayerPacket.YPos = PlayerCharacter.GetYPos();
-	PlayerPacket.ID = PlayerCharacter.GetID();
-	PlayerPacket.Dir = PlayerCharacter.GetDir();
-	PlayerPacket.PlayersColour = PlayerCharacter.GetColour();
+		PlayerPacket.XPos = PlayerCharacter.GetXPos();
+		PlayerPacket.YPos = PlayerCharacter.GetYPos();
+		PlayerPacket.ID = PlayerCharacter.GetID();
+		PlayerPacket.Dir = PlayerCharacter.GetDir();
+		PlayerPacket.PlayersColour = PlayerCharacter.GetColour();
+		PlayerPacket.ServerTimeStamp = LocalGameClock.getElapsedTime().asSeconds() + TimeDifferenceSync;
 
+		sf::Packet Packet;
+		Packet << PlayerPacket;
 
-	sf::Packet Packet;
-	Packet << PlayerPacket;
+		sf::IpAddress ip(SERVER_IP);
+		m_UDPSocket.send(Packet, ip, m_ServerPortNumber);
 
-	sf::IpAddress ip(SERVER_IP);
-	m_UDPSocket.send(Packet, ip, m_ServerPortNumber);
-
+		m_NetworkUpdateClock.restart();
+	}
 	//Listen to the UDP Socket
 
 	sf::Time WaitTime = sf::microseconds(1); //we dont need to block.. just keep checking
@@ -490,7 +499,7 @@ void Application::ServerManagePacketsfromUDPSocket()
 			{
 				if (iter->GetID() == PlayerPacket.ID)
 				{
-					iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
+					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp);
 					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
 				}
 				else
@@ -505,6 +514,8 @@ void Application::ServerManagePacketsfromUDPSocket()
 				PlayerPacketServer.ID = PlayerCharacter.GetID();
 				PlayerPacketServer.Dir = PlayerCharacter.GetDir();
 				PlayerPacketServer.PlayersColour = PlayerCharacter.GetColour();
+				PlayerPacketServer.ServerTimeStamp = LocalGameClock.getElapsedTime().asSeconds();
+
 				
 				sf::Packet InitPacket;
 				InitPacket << PlayerPacketServer;
@@ -542,7 +553,7 @@ void Application::ClientManagePacketsfromUDPSocket()
 			{
 				if (iter->GetID() == PlayerPacket.ID)
 				{
-					iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
+					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp);
 					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
 					//This player exists... we dont need to add them
 					IsNewPlayer = false;

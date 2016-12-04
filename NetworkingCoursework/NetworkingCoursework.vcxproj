@@ -119,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Z:\Coding\APIs-SDKs- etc\SFML-2.4.1\include;E:\Coding\APIS_AND_LIBRARIES\SFML-2.4.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

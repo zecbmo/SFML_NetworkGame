@@ -15,10 +15,14 @@
 *	The Host will use these characters to control the game (whether a player is hit etc) 
 *	And transmit this info to the clients
 */
+
+#define OUT //Tarcking out variables
+
 struct TimePositionStruct
 {
 	sf::Vector2f Position;
-	float TimeStampInSeconds;
+	float ServerTimeStampInSeconds;
+	float SenderStampInSeconds; //May not be needed but may help later for Lerping
 };
 
 
@@ -28,7 +32,8 @@ public:
 	NetworkedCharacter();
 	~NetworkedCharacter();
 
-	void UpdatePosition(float x, float y);
+	void UpdatePosition(sf::Clock& Clock);
+	void UpdateTestPosiiton();
 	void Update(float dt);
 
 	sf::IpAddress GetIP() { return m_OriginIP; };
@@ -41,6 +46,7 @@ public:
 	inline void SetServerLatency(float ServerLat) { m_ServerLatency = m_ServerLatency; };
 	inline float GetServerLatency() { return m_ServerLatency;};
 
+	void AddToPredictionList(float x, float y, float TimeStamp);
 	
 
 private:
@@ -49,6 +55,13 @@ private:
 	float m_ServerLatency;
 
 	std::list<TimePositionStruct*> m_PredictionList;
-	void PredictNextMovement(f::Clock &Clock);
+	TimePositionStruct PredictNextMovement(sf::Clock &Clock);
+	void GetLatestPositions(TimePositionStruct& OUT First, TimePositionStruct&  OUT Second);
+	void LerpToExpectedPosition(TimePositionStruct Expected, sf::Clock& Clock);
+	sf::Vector2f LerpFunction(sf::Vector2f Start, sf::Vector2f End, float Alpha);
+
+	float m_PredictedX;
+	float m_PredictedY;
+
 };
 

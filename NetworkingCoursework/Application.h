@@ -28,8 +28,7 @@ struct PlayerUpdatePacket
 	sf::Uint8 Dir;
 	sf::Uint8 ID;
 	sf::Uint32 PlayersColour;
-	float TimeStamp; //All time Sent Will be Server time as seconds
-
+	float ServerTimeStamp;
 };
 
 struct WelcomePacket
@@ -83,7 +82,7 @@ private:
 	sf::Uint32 m_PlayerIDTracker; //Host will always be player 1 //standard sized ints used when being sent over network packets
 	std::list<NetworkedCharacter*> m_NetworkCharacterList;
 	sf::Time m_TimeOut;
-
+	float m_NetworkedUpdatesSpeed; //the seconds that must pass before sending the next update
 
 	//Sever Spefific
 	sf::TcpListener m_Listener;
@@ -93,6 +92,7 @@ private:
 
 	//Clock
 	sf::Clock LocalGameClock;
+	sf::Clock m_NetworkUpdateClock;
 	float TimeDifferenceSync; //Used on Client Machines to keep track of when the server clock Started (in ms)
 	sf::Text* ServerTimeDisplay;
 	float LatencyTCPRequest(sf::TcpSocket& Socket); //Used to sync clocks
@@ -126,5 +126,7 @@ private:
 	//ClientFuctions
 	void ClientManagePacketsfromUDPSocket();
 
+
+	
 };
 
