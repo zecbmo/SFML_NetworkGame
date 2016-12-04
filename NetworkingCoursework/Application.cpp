@@ -2,15 +2,33 @@
 #include <iostream>
 #include <stdint.h>
 
+//player packet overloads
 sf::Packet& operator <<(sf::Packet& packet, const PlayerUpdatePacket& m)
 {
-	return packet << m.XPos << m.YPos << m.Dir << m.ID;
+	return packet << m.XPos << m.YPos << m.Dir << m.ID << m.PlayersColour;
 }
 sf::Packet& operator >>(sf::Packet& packet, PlayerUpdatePacket& m)
 {
-	return packet >> m.XPos >> m.YPos >> m.Dir >> m.ID;
+	return packet >> m.XPos >> m.YPos >> m.Dir >> m.ID >> m.PlayersColour;
 }
-
+//Welcome Message Overloads
+sf::Packet& operator <<(sf::Packet& packet, const WelcomePacket& m)
+{
+	return packet << m.WelcomeMessage << m.IDTracker << m.ServerGameTime;
+}
+sf::Packet& operator >>(sf::Packet& packet, WelcomePacket& m)
+{
+	return packet >> m.WelcomeMessage >> m.IDTracker >> m.ServerGameTime;
+}
+//Welcome message reply overloads
+sf::Packet& operator <<(sf::Packet& packet, const WelcomePacketReply& m)
+{
+	return packet << m.PlayersChosenColour  << m.UDPPort;
+}
+sf::Packet& operator >>(sf::Packet& packet, WelcomePacketReply& m)
+{
+	return packet >> m.PlayersChosenColour >> m.UDPPort;
+}
 
 Application::Application()
 {
@@ -46,7 +64,7 @@ void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHei
 	m_StartPosFour = sf::Vector2f(ScreenWidth - STARTING_OFFSET, ScreenHeight - STARTING_OFFSET*2);
 
 
-	//Server and Client
+	//Ask user wheter they will act as host/client and set up
 	std::cout << "Please Select (H)ost or (C)lient..." << std::endl;
 	char HostOrClient;
 	std::cin >> HostOrClient;
@@ -63,7 +81,6 @@ void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHei
 		std::cout << "Please Select Port Number..." << std::endl;
 		unsigned short int Port;
 		std::cin >> Port;
-
 		m_ClientPortNumber = Port;
 	}
 	else
@@ -81,29 +98,43 @@ void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHei
 	{
 		ServerSetUp();
 		DebugScreen.AddToDebugScreen("Server", 0,0);
+		ServerTimeDisplay = DebugScreen.AddToDebugScreen("Server Time:", ScreenWidth - ScreenWidth/2, 0);
+
 	}
 	else //CLIENT
 	{
 		ClientSetUp();
 		DebugScreen.AddToDebugScreen("Client", 0, 0);
-
+		ServerTimeDisplay = DebugScreen.AddToDebugScreen("Server Time:", ScreenWidth - ScreenWidth/2, 0);
 	}
-	
+
+	m_TimeOut = sf::seconds(1.0);
 	m_UDPSocket.setBlocking(false);
 }
 
 void Application::Update(float dt)
 {
+	//Update local variables
 	if (m_HasAuthority) //SERVER
 	{
-		ServerUpdate();
+		ServerUpdate(); 
+		char temp[256];
+		sf::Time  CurrentTime = LocalGameClock.getElapsedTime();
+		sprintf_s(temp, "ServerTime : %f", CurrentTime.asSeconds());
+		ServerTimeDisplay->setString(temp);
+		
 	}
 	else //CLIENT
 	{
 		ClientUpdate();
+		char temp[256];
+		sf::Time  CurrentTime = LocalGameClock.getElapsedTime();
+		float SyncedTime = CurrentTime.asSeconds() + TimeDifferenceSync;
+		sprintf_s(temp, "ServerTime : %f", SyncedTime);// +TimeDifferenceSync);
+		ServerTimeDisplay->setString(temp);
 	}
 
-	//Update Game
+	//Update Game with local variables
 	PlayerCharacter.Update(dt);
 	for (auto iter : m_NetworkCharacterList)
 	{
@@ -118,7 +149,42 @@ void Application::Render()
 	//Render everything here
 	PlayerCharacter.Render(m_Window);
 	RenderNetworkedCharacters();
+
+	//last to be on top 
 	DebugScreen.Render(m_Window);
+}
+
+float Application::LatencyTCPRequest(sf::TcpSocket& Socket)
+{
+	float Latency;
+	//Send the current Game Time to server
+	sf::Packet LatencyPacket;
+	LatencyPacket << LocalGameClock.getElapsedTime().asSeconds();
+	Socket.send(LatencyPacket);
+	//recieve message back from server with the same time stamp oriigionally sent
+	Socket.receive(LatencyPacket);
+	//Compare difference and divide by 2
+	if (LatencyPacket >> Latency)
+	{
+		Latency = (LocalGameClock.getElapsedTime().asSeconds() - Latency) /2;
+	}
+	else
+	{
+		Latency = -1;
+	}
+	return Latency;
+}
+
+void Application::RecieveLatenyRequest(sf::TcpSocket& Socket)
+{
+	//Recieve a timestamp and send it back to sender
+	sf::Packet LatencyPacket;
+	Socket.receive(LatencyPacket);
+	float Latency;
+	if (LatencyPacket >> Latency)
+	{
+		Socket.send(LatencyPacket);
+	}
 }
 
 void Application::ServerSetUp()
@@ -131,22 +197,44 @@ void Application::ServerSetUp()
 	{
 		error::ErrorMessage("Host unable to bind the listener to port");
 	}
-	//Add listener to the selector
+
+	//Add listener and UDP socket to the selector
 	m_Selector.add(m_Listener);
 	m_Selector.add(m_UDPSocket);
 
 	
-
-	//Test Character Setup
+	//Controlling Character Setup
 	PlayerCharacter.Init(m_PlayerIDTracker, kRed, m_StartPosOne, "Assets/Textures/Chars.png", DebugScreen);
 	m_PlayerIDTracker++;
 }
 
 void Application::ClientSetUp()
 {
-	//try to connect with TCP to the Server
+	//Select colour
+	std::cout << "Please Select Colour. (R)ed, (G)reen, (B)lack or (P)urple, " << std::endl;
+	char Colour;
+	std::cin >> Colour;
+	Colour = toupper(Colour);
+	PlayerColour ChoosenColour;
 
-	sf::Socket::Status status = m_ClientSideTCPSocket.connect(SERVER_IP, m_ServerPortNumber);
+
+	switch (Colour)
+	{
+	case 'R': ChoosenColour = kRed;
+		break;
+	case 'G': ChoosenColour = kGreen;
+		break;
+	case 'B': ChoosenColour = kBlack;
+		break;
+	case 'P': ChoosenColour = kPurple;
+		break;
+	default:
+		break;
+	}
+	//
+
+	//try to connect with TCP to the Server
+	sf::Socket::Status status = m_ClientSideTCPSocket.connect(SERVER_IP, m_ServerPortNumber, m_TimeOut);
 	if (status != sf::Socket::Done)
 	{
 		error::ErrorMessage("Client Unable to Connect to TCP Server");
@@ -156,33 +244,44 @@ void Application::ClientSetUp()
 		//Show The Welcome Message
 		DebugScreen.AddMessage("Connected To Server", kYellowColour);
 
-		sf::Uint32 RecievedID;
-		std::string RecievedMessage;
-		sf::Packet packet;
-		m_ClientSideTCPSocket.receive(packet);
+		WelcomePacket RecievedWelcomePacket;
+		
+		sf::Packet Packet;
+		m_ClientSideTCPSocket.receive(Packet);
 
-		if (!(packet >> RecievedMessage >> RecievedID))
+		//First message should be a welcome message to allow for setting up existing game variables
+		if (!(Packet >> RecievedWelcomePacket))
 		{
 			error::ErrorMessage("No Welcome Message Recieved!");
 		}
-		int ID = RecievedID;
+		float ServerGameTimeComparison = RecievedWelcomePacket.ServerGameTime - LocalGameClock.getElapsedTime().asSeconds();
+		//Sync clocks
+		float Latency = LatencyTCPRequest(m_ClientSideTCPSocket);
+
+		TimeDifferenceSync = Latency + ServerGameTimeComparison;
+
+		int ID = RecievedWelcomePacket.IDTracker;
 		char WelcomeMessage[256];
-		if (std::strcmp(RecievedMessage.c_str(), "To Many Players on Server! Please Try Later") == 0 )
+
+		//If there are too Many players dont allow a connection
+		if (std::strcmp(RecievedWelcomePacket.WelcomeMessage.c_str(), "To Many Players on Server! Please Try Later") == 0 )
 		{
 			error::ErrorMessage("Too Many Players on Server");
 		}
 		else
 		{
-			sprintf_s(WelcomeMessage, "%s You are Player %d", RecievedMessage.c_str(), RecievedID);
+			sprintf_s(WelcomeMessage, "%s You are Player %d", RecievedWelcomePacket.WelcomeMessage.c_str(), ID);
 			DebugScreen.AddMessage(WelcomeMessage, kYellowColour);			
 		}
-		//Create Character from ID
+
+		//Create Character from ID and set starting position
 
 		sf::Vector2f pos;
 
 		switch (ID)
 		{
-		case 2: pos = m_StartPosTwo;
+		case 2: 
+			pos = m_StartPosTwo;
 			break;
 		case 3: 
 			pos = m_StartPosThree;
@@ -194,20 +293,22 @@ void Application::ClientSetUp()
 			
 			break;
 		}
-		PlayerCharacter.Init(ID, kGreen, pos, "Assets/Textures/Chars.png", DebugScreen);
+		PlayerCharacter.Init(ID, ChoosenColour, pos, "Assets/Textures/Chars.png", DebugScreen);
 
-		//Tell the host what colour we have picked
-		sf::Uint32 col = PlayerCharacter.GetColour();
+		//Reply to Server that we have connected and created a character
+		WelcomePacketReply ReplyPacketToSend;
 
-		sf::Packet ColourPacket;
-		unsigned short UDPPort = m_ClientPortNumber;
-		ColourPacket << col << UDPPort;
-		m_ClientSideTCPSocket.send(ColourPacket);
-		
-		//Populate with other Characters
-
+		//Tell the host what colour we have picked and retirn time
+		ReplyPacketToSend.PlayersChosenColour = PlayerCharacter.GetColour();		
+		ReplyPacketToSend.UDPPort = m_ClientPortNumber;
+		//ReplyPacketToSend.ServerGameTimeReturned = RecievedWelcomePacket.ServerGameTime;
+		//Send the reply packet
+		sf::Packet ReplyPacket;
+		ReplyPacket << ReplyPacketToSend;
+		m_ClientSideTCPSocket.send(ReplyPacket);
 	}
 
+	//Bind and add the socket too the listener
 	m_UDPSocket.bind(m_ClientPortNumber);
 	
 	m_Selector.add(m_UDPSocket);
@@ -224,139 +325,11 @@ void Application::ServerUpdate()
 		//Check Listener for new connection
 		if (m_Selector.isReady(m_Listener))
 		{
-			//Create a new connection to add to the list
-			sf::TcpSocket* NewClient = new sf::TcpSocket;
-			//if the connections is successful
-			if (m_Listener.accept(*NewClient) == sf::Socket::Done)
-			{
-				//Check if max players has been met
-				if (m_PlayerIDTracker > 4)
-				{
-					//Send Failure message
-					std::string ToMany = "To Many Players on Server! Please Try Later";
-					sf::Packet Packet;
-					Packet << ToMany << m_PlayerIDTracker;
-					NewClient->send(Packet);	
-					NewClient->disconnect();
-				}
-				else
-				{
-					//Add new connection to TCP list
-					m_ClientTCPSockets.push_back(NewClient);
-					m_Selector.add(*NewClient);
-					//DebugScreen.AddToDebugScreen("New Client Connected", 0, 400);
-					DebugScreen.AddMessage("New Client Connected", kYellowColour);
-
-					//Send Welcome Message and player ID
-					sf::Packet Packet;
-					Packet << m_WelcomeMessage << m_PlayerIDTracker;
-					NewClient->send(Packet);
-				
-					
-					//Create a new networked Character
-					NetworkedCharacter* NewCharacter = new NetworkedCharacter;
-					sf::Vector2f pos;
-					switch (m_PlayerIDTracker)
-					{
-					case 2: pos = m_StartPosTwo;
-						break;
-					case 3:
-						pos = m_StartPosThree;
-						break;
-					case 4:
-						pos = m_StartPosFour;
-						break;
-					default:
-
-						break;
-					}
-
-					//Add the origin IP and port to the newtorked Char
-					
-
-					//Create UDP Socket Based on this Address
-
-					sf::Uint32 col;
-					sf::Packet RecieveColour;
-					unsigned short UDPPort;
-					NewClient->receive(RecieveColour);
-
-					
-					if(RecieveColour >> col >> UDPPort)
-					{
-
-						NewCharacter->Init(m_PlayerIDTracker, (PlayerColour)col, pos, "Assets/Textures/Chars.png", DebugScreen);
-
-						NewCharacter->SetIP(NewClient->getRemoteAddress());
-						NewCharacter->SetThePort(UDPPort);
-
-						m_NetworkCharacterList.push_back(NewCharacter);
-					}
-
-					//Tell Clients to Add The Hoset networked character
-				
-
-					//update tracker number
-					m_PlayerIDTracker++;
-				}
-			}
-			else
-			{
-				error::ErrorMessage("New Connection Failed on Host. Unable to add to TCP Client list!");
-			}
+			ServerManagePacketsFromListener();
 		}
 		if (m_Selector.isReady(m_UDPSocket))
 		{
-			//Recieve packet from client
-
-			
-
-			while (true)
-			{
-				PlayerUpdatePacket PlayerPacket;
-
-				sf::Packet Packet;
-				//Packet << PlayerPacket;
-
-				sf::IpAddress Sender;
-				unsigned short Port;
-
-				if (m_UDPSocket.receive(Packet, Sender, Port) != sf::Socket::Done)
-				{
-					break;
-				}
-
-				if (Packet >> PlayerPacket)
-				{
-					//Check the id against the client and update or send the new position to the clients
-					for (auto iter : m_NetworkCharacterList)
-					{
-						if (iter->GetID() == PlayerPacket.ID)
-						{
-							iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
-							iter->SetDir((PlayerDirection)PlayerPacket.Dir);
-						}
-						else
-						{
-							m_UDPSocket.send(Packet, iter->GetIP(), iter->GetThePort());
-						}
-
-						PlayerUpdatePacket PlayerPacket;
-
-						PlayerPacket.XPos = PlayerCharacter.GetXPos();
-						PlayerPacket.YPos = PlayerCharacter.GetYPos();
-						PlayerPacket.ID = PlayerCharacter.GetID();
-						PlayerPacket.Dir = PlayerCharacter.GetDir();
-
-
-						sf::Packet InitPacket;
-						InitPacket << PlayerPacket;
-
-
-						m_UDPSocket.send(InitPacket, iter->GetIP(), iter->GetThePort());
-					}
-				}
-			}
+			ServerManagePacketsfromUDPSocket();
 		}
 	}
 }
@@ -369,6 +342,7 @@ void Application::ClientUpdate()
 	PlayerPacket.YPos = PlayerCharacter.GetYPos();
 	PlayerPacket.ID = PlayerCharacter.GetID();
 	PlayerPacket.Dir = PlayerCharacter.GetDir();
+	PlayerPacket.PlayersColour = PlayerCharacter.GetColour();
 
 
 	sf::Packet Packet;
@@ -384,52 +358,7 @@ void Application::ClientUpdate()
 	{
 		if (m_Selector.isReady(m_UDPSocket))
 		{
-			while (true)
-			{
-				PlayerUpdatePacket PlayerPacket;
-
-				sf::Packet Packet;
-				//Packet << PlayerPacket;
-
-				sf::IpAddress Sender;
-				unsigned short Port;
-				if (m_UDPSocket.receive(Packet, Sender, Port) != sf::Socket::Done)
-				{
-					break;
-				}
-
-				if (Packet >> PlayerPacket)
-				{
-					//A bool to check against the ID if the player already exists
-					bool IsNewPlayer = true;
-
-					//Check the id against the client and update or send the new position to the clients
-					for (auto iter : m_NetworkCharacterList)
-					{
-						if (iter->GetID() == PlayerPacket.ID)
-						{
-							iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
-							iter->SetDir((PlayerDirection)PlayerPacket.Dir);
-							//This player exists... we dont need to add them
-							IsNewPlayer = false;
-						}
-
-					}
-
-					if (IsNewPlayer)
-					{
-						//Create a new networked Character
-						NetworkedCharacter* NewCharacter = new NetworkedCharacter;
-						sf::Vector2f pos = sf::Vector2f(PlayerPacket.XPos, PlayerPacket.YPos);
-
-
-						NewCharacter->Init(PlayerPacket.ID, kRed, pos, "Assets/Textures/Chars.png", DebugScreen);
-						m_NetworkCharacterList.push_back(NewCharacter);
-
-					}
-				}
-
-			}
+			ClientManagePacketsfromUDPSocket();
 		}
 	}
 
@@ -440,5 +369,199 @@ void Application::RenderNetworkedCharacters()
 	for (auto iter : m_NetworkCharacterList)
 	{
 		iter->Render(m_Window);
+	}
+}
+
+void Application::ServerManagePacketsFromListener()
+{
+	//Create a new connection to add to the list
+	sf::TcpSocket* NewClient = new sf::TcpSocket;
+	//if the connections is successful
+	if (m_Listener.accept(*NewClient) == sf::Socket::Done)
+	{
+		WelcomePacket WelcomePacketToSend;
+
+		//Check if max players has been met
+		if (m_PlayerIDTracker > 4)
+		{
+			//Send Failure message
+			WelcomePacketToSend.WelcomeMessage = "To Many Players on Server! Please Try Later";
+			sf::Packet Packet;
+			Packet << WelcomePacketToSend;
+			NewClient->send(Packet);
+			NewClient->disconnect();
+		}
+		else //add a new player
+		{
+			//Add new connection to TCP list
+			m_ClientTCPSockets.push_back(NewClient);
+			m_Selector.add(*NewClient);
+			//DebugScreen.AddToDebugScreen("New Client Connected", 0, 400);
+			DebugScreen.AddMessage("New Client Connected", kYellowColour);
+
+			//Send Welcome Message and player ID
+			WelcomePacketToSend.WelcomeMessage = m_WelcomeMessage;
+			WelcomePacketToSend.IDTracker = m_PlayerIDTracker;
+			sf::Time CurrrentTime = LocalGameClock.getElapsedTime();
+			WelcomePacketToSend.ServerGameTime = CurrrentTime.asSeconds();
+			
+
+			/***********************************************************************************************************************************************************************/
+
+			//Send Packet
+			sf::Packet Packet;
+			Packet << WelcomePacketToSend;
+			NewClient->send(Packet);
+
+			RecieveLatenyRequest(*NewClient);
+
+			//Create a new networked Character
+			NetworkedCharacter* NewCharacter = new NetworkedCharacter;
+			sf::Vector2f pos;
+			switch (m_PlayerIDTracker)
+			{
+			case 2: pos = m_StartPosTwo;
+				break;
+			case 3:
+				pos = m_StartPosThree;
+				break;
+			case 4:
+				pos = m_StartPosFour;
+				break;
+			default:
+
+				break;
+			}
+
+			//Add the origin IP and port to the newtorked Char
+			WelcomePacketReply RecievedWelcomeReply;
+
+
+			sf::Packet RecievePacket;
+			NewClient->receive(RecievePacket);
+
+
+			if (RecievePacket >> RecievedWelcomeReply)
+			{
+
+				NewCharacter->Init(m_PlayerIDTracker, (PlayerColour)RecievedWelcomeReply.PlayersChosenColour, pos, "Assets/Textures/Chars.png", DebugScreen);
+
+				NewCharacter->SetIP(NewClient->getRemoteAddress());
+				NewCharacter->SetThePort(RecievedWelcomeReply.UDPPort);
+
+				m_NetworkCharacterList.push_back(NewCharacter);
+
+
+			}
+
+			//update tracker number
+			m_PlayerIDTracker++;
+		}
+	}
+	else
+	{
+		error::ErrorMessage("New Connection Failed on Host. Unable to add to TCP Client list!");
+	}
+}
+
+void Application::ServerManagePacketsfromUDPSocket()
+{
+	//Recieve packet from client		
+
+	while (true)
+	{
+		PlayerUpdatePacket PlayerPacket;
+
+		sf::Packet Packet;
+		//Packet << PlayerPacket;
+
+		sf::IpAddress Sender;
+		unsigned short Port;
+
+		if (m_UDPSocket.receive(Packet, Sender, Port) != sf::Socket::Done)
+		{
+			break;
+		}
+
+		if (Packet >> PlayerPacket)
+		{
+			//Check the id against the client and update or send the new position to the clients
+			for (auto iter : m_NetworkCharacterList)
+			{
+				if (iter->GetID() == PlayerPacket.ID)
+				{
+					iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
+					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
+				}
+				else
+				{
+					m_UDPSocket.send(Packet, iter->GetIP(), iter->GetThePort());
+				}
+
+				PlayerUpdatePacket PlayerPacketServer;
+
+				PlayerPacketServer.XPos = PlayerCharacter.GetXPos();
+				PlayerPacketServer.YPos = PlayerCharacter.GetYPos();
+				PlayerPacketServer.ID = PlayerCharacter.GetID();
+				PlayerPacketServer.Dir = PlayerCharacter.GetDir();
+				PlayerPacketServer.PlayersColour = PlayerCharacter.GetColour();
+				
+				sf::Packet InitPacket;
+				InitPacket << PlayerPacketServer;
+
+
+				m_UDPSocket.send(InitPacket, iter->GetIP(), iter->GetThePort());
+			}
+		}
+	}
+}
+
+void Application::ClientManagePacketsfromUDPSocket()
+{
+	while (true)
+	{
+		PlayerUpdatePacket PlayerPacket;
+
+		sf::Packet Packet;
+		//Packet << PlayerPacket;
+
+		sf::IpAddress Sender;
+		unsigned short Port;
+		if (m_UDPSocket.receive(Packet, Sender, Port) != sf::Socket::Done)
+		{
+			break;
+		}
+
+		if (Packet >> PlayerPacket)
+		{
+			//A bool to check against the ID if the player already exists
+			bool IsNewPlayer = true;
+
+			//Check the id against the client and update or send the new position to the clients
+			for (auto iter : m_NetworkCharacterList)
+			{
+				if (iter->GetID() == PlayerPacket.ID)
+				{
+					iter->UpdatePosition(PlayerPacket.XPos, PlayerPacket.YPos);
+					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
+					//This player exists... we dont need to add them
+					IsNewPlayer = false;
+				}
+
+			}
+
+			if (IsNewPlayer)
+			{
+				//Create a new networked Character
+				NetworkedCharacter* NewCharacter = new NetworkedCharacter;
+				sf::Vector2f pos = sf::Vector2f(PlayerPacket.XPos, PlayerPacket.YPos);
+
+
+				NewCharacter->Init(PlayerPacket.ID, (PlayerColour)PlayerPacket.PlayersColour, pos, "Assets/Textures/Chars.png", DebugScreen);
+				m_NetworkCharacterList.push_back(NewCharacter);
+
+			}
+		}
+
 	}
 }

@@ -2,8 +2,8 @@
 #include <SFML/Network.hpp>
 #include "Application.h"
 
-#define SCREEN_WIDTH 600
-#define SCREEN_DEPTH 400
+#define SCREEN_WIDTH 800
+#define SCREEN_DEPTH 600
 
 int main()
 {

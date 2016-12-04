@@ -1,6 +1,7 @@
 #pragma once
 #include "PlayerCharacter.h"
 #include <SFML\Network.hpp>
+#include <list>
 
 /* The Networked Character
 *
@@ -14,6 +15,12 @@
 *	The Host will use these characters to control the game (whether a player is hit etc) 
 *	And transmit this info to the clients
 */
+struct TimePositionStruct
+{
+	sf::Vector2f Position;
+	float TimeStampInSeconds;
+};
+
 
 class NetworkedCharacter : public PlayerCharacter
 {
@@ -22,7 +29,7 @@ public:
 	~NetworkedCharacter();
 
 	void UpdatePosition(float x, float y);
-	void Update(float dt) { UpdateSpriteState(dt); };
+	void Update(float dt);
 
 	sf::IpAddress GetIP() { return m_OriginIP; };
 	void SetIP(sf::IpAddress IP) { m_OriginIP = IP; };
@@ -31,9 +38,17 @@ public:
 
 	inline void SetDir(PlayerDirection Dir) { m_Dir = Dir; };
 
+	inline void SetServerLatency(float ServerLat) { m_ServerLatency = m_ServerLatency; };
+	inline float GetServerLatency() { return m_ServerLatency;};
+
+	
 
 private:
 	sf::IpAddress m_OriginIP;
 	unsigned short m_OriginPort;
+	float m_ServerLatency;
+
+	std::list<TimePositionStruct*> m_PredictionList;
+	void PredictNextMovement(f::Clock &Clock);
 };
 

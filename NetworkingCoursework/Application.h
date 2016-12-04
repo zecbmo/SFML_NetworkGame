@@ -6,6 +6,8 @@
 #include "NetworkedCharacter.h"
 #include "DebugUI.h"
 #include <list>
+#include <time.h>  
+#include <chrono>
 
 #define SCREEN_MESSAGE_Y_OFFSET 40
 #define SCREEN_MESSAGE_X_OFFSET 10
@@ -25,14 +27,31 @@ struct PlayerUpdatePacket
 	float YPos;
 	sf::Uint8 Dir;
 	sf::Uint8 ID;
+	sf::Uint32 PlayersColour;
+	float TimeStamp; //All time Sent Will be Server time as seconds
 
+};
+
+struct WelcomePacket
+{
+	std::string WelcomeMessage;
+	sf::Uint32 IDTracker;
+	float ServerGameTime;
+};
+struct WelcomePacketReply
+{
+	sf::Uint32 PlayersChosenColour;
+	unsigned short UDPPort;
 };
 
 sf::Packet& operator <<(sf::Packet& packet, const PlayerUpdatePacket& m);
 sf::Packet& operator >>(sf::Packet& packet, PlayerUpdatePacket& m);
 
+sf::Packet& operator <<(sf::Packet& packet, const WelcomePacket& m);
+sf::Packet& operator >>(sf::Packet& packet, WelcomePacket& m);
 
-
+sf::Packet& operator <<(sf::Packet& packet, const WelcomePacketReply& m);
+sf::Packet& operator >>(sf::Packet& packet, WelcomePacketReply& m);
 
 
 class Application
@@ -63,12 +82,23 @@ private:
 	sf::UdpSocket m_UDPSocket;	
 	sf::Uint32 m_PlayerIDTracker; //Host will always be player 1 //standard sized ints used when being sent over network packets
 	std::list<NetworkedCharacter*> m_NetworkCharacterList;
+	sf::Time m_TimeOut;
+
 
 	//Sever Spefific
 	sf::TcpListener m_Listener;
 	sf::SocketSelector m_Selector;	
 	std::list<sf::TcpSocket*> m_ClientTCPSockets;
 	std::string m_WelcomeMessage;
+
+	//Clock
+	sf::Clock LocalGameClock;
+	float TimeDifferenceSync; //Used on Client Machines to keep track of when the server clock Started (in ms)
+	sf::Text* ServerTimeDisplay;
+	float LatencyTCPRequest(sf::TcpSocket& Socket); //Used to sync clocks
+	void RecieveLatenyRequest(sf::TcpSocket& Socket);
+	
+	std::chrono::steady_clock::time_point m_SystemTime;
 
 	//Client Specific
 	sf::TcpSocket m_ClientSideTCPSocket;
@@ -88,6 +118,13 @@ private:
 
 	//RenderHelpers
 	void RenderNetworkedCharacters();
+
+	//ServerFunctions
+	void ServerManagePacketsFromListener();
+	void ServerManagePacketsfromUDPSocket();
+
+	//ClientFuctions
+	void ClientManagePacketsfromUDPSocket();
 
 };
 

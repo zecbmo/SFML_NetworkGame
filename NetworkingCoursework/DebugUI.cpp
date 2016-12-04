@@ -33,7 +33,7 @@ sf::Text* DebugUI::AddToDebugScreen(std::string InitialString, int XPos, int YPo
 	sf::Text* NewText = new sf::Text();
 	NewText->setFont(m_Font);
 	NewText->setString(InitialString);
-	NewText->setPosition(sf::Vector2f(XPos, YPos));
+	NewText->setPosition(sf::Vector2f((float)XPos, (float)YPos));
 
 	switch (Colour)
 	{
