@@ -60,5 +60,7 @@ protected:
 	float m_AnimCounter;
 	int m_CurrentSpritePos;
 	
+
+	sf::Vector2f m_Position;
 };
 

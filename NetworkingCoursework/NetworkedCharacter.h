@@ -29,7 +29,7 @@ struct TimePositionStruct
 class NetworkedCharacter : public PlayerCharacter
 {
 public:
-	NetworkedCharacter();
+
 	~NetworkedCharacter();
 
 	
@@ -45,7 +45,7 @@ public:
 	inline void SetServerLatency(float ServerLat) { m_ServerLatency = m_ServerLatency; };
 	inline float GetServerLatency() { return m_ServerLatency;};
 
-	void AddToPredictionList(float x, float y, float TimeStamp, sf::Clock* Clock);
+	void AddToPredictionList(float x, float y, float TimeStamp, sf::Clock* Clock, float CurrentX, float CurrentY);
 	
 
 private:
@@ -60,6 +60,7 @@ private:
 
 	sf::Vector2f m_LerpStartPos;
 	sf::Vector2f m_LerpEndPos;
+
 	float m_ExpectedTimeToReachEnd;
 
 

@@ -2,11 +2,6 @@
 
 
 
-NetworkedCharacter::NetworkedCharacter()
-{
-}
-
-
 NetworkedCharacter::~NetworkedCharacter()
 {
 }
@@ -14,17 +9,18 @@ NetworkedCharacter::~NetworkedCharacter()
 void NetworkedCharacter::Update(float dt, float GameTime)
 {
 	float Alpha = GameTime / m_ExpectedTimeToReachEnd;
-	m_LerpStartPos = LerpFunction(m_LerpStartPos, m_LerpEndPos, Alpha);
+	
+	
+	sf::Vector2f NewPos = LerpFunction(m_LerpStartPos, m_LerpEndPos, Alpha);
 
 	UpdateSpriteState(dt);
 
-	m_Sprite.setPosition(m_LerpStartPos);
-	
+	m_Sprite.setPosition(NewPos);
 }
 
-void NetworkedCharacter::AddToPredictionList(float x, float y, float TimeStamp, sf::Clock* Clock)
+void NetworkedCharacter::AddToPredictionList(float x, float y, float TimeStamp, sf::Clock* Clock, float CurrentX, float CurrentY)
 {
-	
+	m_Position = sf::Vector2f(CurrentX, CurrentY);
 	//Create new Timstruct
 	TimePositionStruct NewValue;
 	NewValue.Position = sf::Vector2f(x, y);

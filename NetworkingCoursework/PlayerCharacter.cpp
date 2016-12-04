@@ -45,6 +45,7 @@ void PlayerCharacter::Init(int PlayerID, PlayerColour Colour, sf::Vector2f Start
 	}
 
 	//Apply texture and scale it
+	m_Sprite.setPosition(sf::Vector2f(0,0));
 	m_Sprite.setTexture(m_Texture);
 	m_Sprite.setTextureRect(sf::IntRect(0, m_Sprite_Y_Pos, m_Texture_Width, m_Texture_Height));
 	m_Sprite.setScale(sf::Vector2f(5.f, 5.f));
@@ -56,7 +57,7 @@ void PlayerCharacter::Init(int PlayerID, PlayerColour Colour, sf::Vector2f Start
 
 	//Set Ref to Debug UI
 	m_Debug = &DebugScreen;
-	//PlayerPositionText = m_Debug->AddToDebugScreen("player one position", 0, 0, kYellowColour);
+	PlayerPositionText = m_Debug->AddToDebugScreen("player position", 0, 40, kYellowColour);
 
 	//Animated Sprite Setup
 	m_FramesPerSecond = 8;
@@ -70,11 +71,14 @@ void PlayerCharacter::Update(float dt)
 
 	//update Debug info
 
+
 	
 	sf::Vector2f pos = m_Sprite.getPosition();
 	char temp[256];
 	sprintf_s(temp, "Player Position : X %.2f Y %.2f", pos.x, pos.y);
 	//PlayerPositionText->setString(temp);
+
+	m_Position = pos;
 
 }
 

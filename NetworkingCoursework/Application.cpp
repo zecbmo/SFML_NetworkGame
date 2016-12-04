@@ -496,7 +496,10 @@ void Application::ServerManagePacketsfromUDPSocket()
 			{
 				if (iter->GetID() == PlayerPacket.ID)
 				{
-					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp, &LocalGameClock);
+					float x = iter->GetXPos();
+					float y = iter->GetYPos();
+
+					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp, &LocalGameClock,x ,y);
 					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
 				}
 				else
@@ -550,7 +553,10 @@ void Application::ClientManagePacketsfromUDPSocket()
 			{
 				if (iter->GetID() == PlayerPacket.ID)
 				{
-					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp, &LocalGameClock);
+					float x = iter->GetXPos();
+					float y = iter->GetYPos();
+
+					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp, &LocalGameClock,x , y);
 					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
 					//This player exists... we dont need to add them
 					IsNewPlayer = false;
