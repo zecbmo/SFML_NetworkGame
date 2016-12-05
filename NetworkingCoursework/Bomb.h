@@ -7,12 +7,11 @@ public:
 	Bomb(sf::Vector2f Position, float TimeToExplode);
 	~Bomb();
 
-	void Update(float dt);
+	void Update(float dt, float CurrentTime);
 	void Render(sf::RenderWindow* Window);
 	bool IsExploded() { return m_IsExploded; };
 
 private:
-	sf::Clock m_BombClock;
 	float m_TimeToExplode;
 	bool m_IsExploded;
 	void Explode();

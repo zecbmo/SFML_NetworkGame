@@ -63,8 +63,8 @@ void PlayerCharacter::Init(int PlayerID, PlayerColour Colour, sf::Vector2f Start
 	m_FramesPerSecond = 8;
 
 	//bomb controllers
-	m_BombFireRate = 3.f;
-	m_BombExplosionDelay = 2.5f; //could be the same (only can have one bomb at a time)
+	m_BombFireRate = 4.f;
+	m_BombExplosionDelay = 4.f; //could be the same (only can have one bomb at a time)
 
 	//bug fixing
 	m_DoOnce = true;

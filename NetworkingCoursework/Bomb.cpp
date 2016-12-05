@@ -13,19 +13,20 @@ Bomb::Bomb(sf::Vector2f Position, float TimeToExplode)
 	{
 		error::StringError("Assets/Textures/Bomb.png", "Unable to load image in player character");
 	}
-	
+	sf::Vector2f Offset(7,16);
 
 	//Apply texture and scale it#
 	m_TextureWidth = 240;
 	m_Sprite.setPosition(sf::Vector2f(0, 0));
 	m_Sprite.setTexture(m_Texture);
 	m_Sprite.setTextureRect(sf::IntRect(0, 0, m_TextureWidth, 288));
-	m_Sprite.setScale(sf::Vector2f(5.f, 5.f));
-	m_Sprite.setPosition(Position);
+	m_Sprite.setScale(sf::Vector2f(.25f, .25f));
+	m_Sprite.setPosition(Position + Offset);
 
 	//animating 
 	m_CurrentSpritePos = 0;
 	m_FramesPerSecond = 10;
+	m_AnimCounter = 0;
 }
 
 
@@ -33,14 +34,14 @@ Bomb::~Bomb()
 {
 }
 
-void Bomb::Update(float dt)
+void Bomb::Update(float dt, float CurrentTime)
 {
-	if (m_BombClock.getElapsedTime().asSeconds() > m_TimeToExplode)
+	if (CurrentTime > m_TimeToExplode)
 	{
 		Explode();
 		m_IsExploded = true;
 	}
-	else if (m_BombClock.getElapsedTime().asSeconds() > (m_TimeToExplode - 0.5f) )//flash if about to explode 
+	else if (CurrentTime > (m_TimeToExplode - 0.75f) )//flash if about to explode 
 	{
 		if (m_AnimCounter > 1)
 		{

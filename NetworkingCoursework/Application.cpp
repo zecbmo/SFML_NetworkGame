@@ -49,7 +49,7 @@ Application::~Application()
 
 void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHeight)
 {
-
+	TimeDifferenceSync = 0; //server will always be 0
 	//Store window and pointers
 
 	m_Window = Window;
@@ -119,7 +119,7 @@ void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHei
 	m_TimeOut = sf::seconds(1.0);
 	m_UDPSocket.setBlocking(false);
 	m_NetworkedUpdatesSpeed = 0.1f;
-	TimeDifferenceSync = 0; //server will always be 0
+	
 }
 
 void Application::Update(float dt)
@@ -150,7 +150,7 @@ void Application::Update(float dt)
 	{
 		iter->Update(dt, LocalGameClock.getElapsedTime().asSeconds());
 	}
-
+	CheckForAndCreateBombs(dt);
 	UpdateBombList(dt);
 
 	DebugScreen.Update();
@@ -324,6 +324,8 @@ void Application::ClientSetUp()
 	m_UDPSocket.bind(m_ClientPortNumber);
 	
 	m_Selector.add(m_UDPSocket);
+	m_Selector.add(m_ClientSideTCPSocket);
+
 
 }
 
@@ -341,7 +343,7 @@ void Application::ServerUpdate()
 		}
 		else
 		{
-			//ServerManagePacketsFromTCPSockets();
+			ServerManagePacketsFromTCPSockets();
 		}			 
 		if (m_Selector.isReady(m_UDPSocket))
 		{
@@ -383,7 +385,7 @@ void Application::ClientUpdate()
 		}
 		if (m_Selector.isReady(m_ClientSideTCPSocket))
 		{
-			//ClientManagePacketsfromTCPSocket();
+			ClientManagePacketsfromTCPSocket();
 		}
 	}
 
@@ -604,7 +606,7 @@ void Application::ClientManagePacketsfromUDPSocket()
 					float x = iter->GetXPos();
 					float y = iter->GetYPos();
 
-					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp- TimeDifferenceSync, &LocalGameClock,x , y);
+					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp - TimeDifferenceSync, &LocalGameClock,x , y);
 					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
 					//This player exists... we dont need to add them
 					IsNewPlayer = false;
@@ -651,7 +653,7 @@ void Application::CheckForAndCreateBombs(float dt)
 		BombPacket BombToBeSent;
 		BombToBeSent.Xpos = PlayerCharacter.GetXPos();
 		BombToBeSent.Ypos = PlayerCharacter.GetYPos();
-		BombToBeSent.TimeToExplode = PlayerCharacter.GetBombExplosionDelay() + LocalGameClock.getElapsedTime().asSeconds() + TimeDifferenceSync;
+		BombToBeSent.TimeToExplode = PlayerCharacter.GetBombExplosionDelay() + LocalGameClock.getElapsedTime().asSeconds() +TimeDifferenceSync;
 
 		//if it has authority
 		if (m_HasAuthority)
@@ -687,7 +689,7 @@ void Application::UpdateBombList(float dt)
 	while (iter != m_Bombs.end())
 	{
 		Bomb* BombC = (*iter);
-		BombC->Update(dt);
+		BombC->Update(dt, LocalGameClock.getElapsedTime().asSeconds()+ TimeDifferenceSync);
 		if (BombC->IsExploded())
 		{
 			m_Bombs.erase(iter++);
