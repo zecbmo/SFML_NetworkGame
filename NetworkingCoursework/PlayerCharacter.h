@@ -17,7 +17,7 @@ public:
 	void Init(int PlayerID, PlayerColour Colour, sf::Vector2f StartingPos, std::string Filename, DebugUI& DebugScreen);
 	
 	virtual void Update(float dt);
-	virtual void Movement(float dt);
+	bool BombRequests(float dt, float GameTime);
 
 	void Render(sf::RenderWindow* Window);
 
@@ -28,9 +28,18 @@ public:
 	inline sf::Uint8 GetID() { return m_ID; };
 	inline sf::Uint8 GetDir() { return  (sf::Uint8)m_Dir; };
 
+	float GetBombExplosionDelay() { return m_BombExplosionDelay; };
 	
 
 protected:
+	//Updates	
+	virtual void Movement(float dt);
+	
+	//Bomb Clock
+	sf::Clock m_BombClock;
+	float m_BombFireRate;
+	float m_BombExplosionDelay;
+	
 
 	//rendering 
 	sf::Texture m_Texture;
@@ -41,26 +50,27 @@ protected:
 	int m_Sprite_X_Pos;
 	int m_Sprite_Y_Pos;
 
-	sf::Uint8 m_ID;
-
-	float m_Speed;
-
-	PlayerDirection m_Dir;
+	//player identifiers
+	sf::Uint8 m_ID;	
 	PlayerColour m_Colour;
 
+	//speed which they can move
+	float m_Speed;	
+	
 	//Debug
 	DebugUI* m_Debug;
 	sf::Text* PlayerPositionText;
+	sf::Vector2f m_Position;
 
-
+	//Animation
 	void UpdateSprite(int SpritePos,float dt);
 	void UpdateSpriteState(float dt);
 	//animating the sprites
 	float m_FramesPerSecond;
 	float m_AnimCounter;
 	int m_CurrentSpritePos;
+	PlayerDirection m_Dir;
 	
-
-	sf::Vector2f m_Position;
+	bool m_DoOnce; //fixes sfml bug for the networked characters - (Accessing m_Sprite position returning nan(IND))
 };
 

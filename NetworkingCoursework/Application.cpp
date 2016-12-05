@@ -29,6 +29,14 @@ sf::Packet& operator >>(sf::Packet& packet, WelcomePacketReply& m)
 {
 	return packet >> m.PlayersChosenColour >> m.UDPPort;
 }
+sf::Packet& operator <<(sf::Packet& packet, const BombPacket& m)
+{
+	return packet << m.Xpos << m.Ypos << m.TimeToExplode;
+}
+sf::Packet& operator >>(sf::Packet& packet, BombPacket& m)
+{
+	return packet >> m.Xpos >> m.Ypos >> m.TimeToExplode;
+}
 
 Application::Application()
 {
@@ -110,7 +118,8 @@ void Application::Init(sf::RenderWindow * Window, int ScreenWidth, int ScreenHei
 
 	m_TimeOut = sf::seconds(1.0);
 	m_UDPSocket.setBlocking(false);
-	m_NetworkedUpdatesSpeed = 0.2f;
+	m_NetworkedUpdatesSpeed = 0.1f;
+	TimeDifferenceSync = 0; //server will always be 0
 }
 
 void Application::Update(float dt)
@@ -142,6 +151,8 @@ void Application::Update(float dt)
 		iter->Update(dt, LocalGameClock.getElapsedTime().asSeconds());
 	}
 
+	UpdateBombList(dt);
+
 	DebugScreen.Update();
 }
 
@@ -150,7 +161,7 @@ void Application::Render()
 	//Render everything here
 	PlayerCharacter.Render(m_Window);
 	RenderNetworkedCharacters();
-
+	RenderBombs();
 	//last to be on top 
 	DebugScreen.Render(m_Window);
 }
@@ -328,6 +339,10 @@ void Application::ServerUpdate()
 		{
 			ServerManagePacketsFromListener();
 		}
+		else
+		{
+			//ServerManagePacketsFromTCPSockets();
+		}			 
 		if (m_Selector.isReady(m_UDPSocket))
 		{
 			ServerManagePacketsfromUDPSocket();
@@ -365,6 +380,10 @@ void Application::ClientUpdate()
 		if (m_Selector.isReady(m_UDPSocket))
 		{
 			ClientManagePacketsfromUDPSocket();
+		}
+		if (m_Selector.isReady(m_ClientSideTCPSocket))
+		{
+			//ClientManagePacketsfromTCPSocket();
 		}
 	}
 
@@ -525,6 +544,35 @@ void Application::ServerManagePacketsfromUDPSocket()
 			}
 		}
 	}
+
+	int thisloopisover = 0;
+}
+
+void Application::ServerManagePacketsFromTCPSockets()
+{
+	for (auto iter : m_ClientTCPSockets)
+	{
+		sf::TcpSocket& Client = *iter;
+		if (m_Selector.isReady(Client))
+		{
+			// The client has sent some data, we can receive it
+			BombPacket RecievingBombPacket;
+			sf::Packet Packet;
+			if (Client.receive(Packet) == sf::Socket::Done)
+			{
+				if (Packet >> RecievingBombPacket)
+				{
+					Bomb* NewBomb = new Bomb(sf::Vector2f(RecievingBombPacket.Xpos, RecievingBombPacket.Ypos), RecievingBombPacket.TimeToExplode);
+					m_Bombs.push_back(NewBomb);
+					//Send copy of bomb to all players and create
+					for (auto iter : m_ClientTCPSockets)
+					{
+						SendBombPacket(RecievingBombPacket, iter);
+					}
+				}
+			}
+		}
+	}
 }
 
 void Application::ClientManagePacketsfromUDPSocket()
@@ -556,7 +604,7 @@ void Application::ClientManagePacketsfromUDPSocket()
 					float x = iter->GetXPos();
 					float y = iter->GetYPos();
 
-					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp, &LocalGameClock,x , y);
+					iter->AddToPredictionList(PlayerPacket.XPos, PlayerPacket.YPos, PlayerPacket.ServerTimeStamp- TimeDifferenceSync, &LocalGameClock,x , y);
 					iter->SetDir((PlayerDirection)PlayerPacket.Dir);
 					//This player exists... we dont need to add them
 					IsNewPlayer = false;
@@ -577,5 +625,84 @@ void Application::ClientManagePacketsfromUDPSocket()
 			}
 		}
 
+	}
+}
+
+void Application::ClientManagePacketsfromTCPSocket()
+{
+	BombPacket RecievingBombPacket;
+	sf::Packet Packet;
+	if (m_ClientSideTCPSocket.receive(Packet) == sf::Socket::Done)
+	{
+		if (Packet >> RecievingBombPacket)
+		{
+			Bomb* NewBomb = new Bomb(sf::Vector2f(RecievingBombPacket.Xpos, RecievingBombPacket.Ypos), RecievingBombPacket.TimeToExplode);
+			m_Bombs.push_back(NewBomb);
+		}
+	}
+}
+
+void Application::CheckForAndCreateBombs(float dt)
+{
+
+	if (PlayerCharacter.BombRequests(dt, LocalGameClock.getElapsedTime().asSeconds()))
+	{
+
+		BombPacket BombToBeSent;
+		BombToBeSent.Xpos = PlayerCharacter.GetXPos();
+		BombToBeSent.Ypos = PlayerCharacter.GetYPos();
+		BombToBeSent.TimeToExplode = PlayerCharacter.GetBombExplosionDelay() + LocalGameClock.getElapsedTime().asSeconds() + TimeDifferenceSync;
+
+		//if it has authority
+		if (m_HasAuthority)
+		{
+			Bomb* NewBomb = new Bomb(sf::Vector2f(BombToBeSent.Xpos, BombToBeSent.Ypos), BombToBeSent.TimeToExplode);
+			m_Bombs.push_back(NewBomb);
+			//Send copy of bomb to all players and create
+			for (auto iter : m_ClientTCPSockets)
+			{
+				SendBombPacket(BombToBeSent, iter);
+			}
+		}
+		else
+		{
+			//send bomb message to server			
+			SendBombPacket(BombToBeSent, &m_ClientSideTCPSocket);
+			//which will create bombs for everyone
+		}
+	}
+}
+
+void Application::SendBombPacket(BombPacket BombCreationPacket, sf::TcpSocket* Socket) 
+{
+	sf::Packet Packet;
+	Packet << BombCreationPacket;
+	Socket->send(Packet);
+}
+
+void Application::UpdateBombList(float dt)
+{
+
+	auto iter = m_Bombs.begin();
+	while (iter != m_Bombs.end())
+	{
+		Bomb* BombC = (*iter);
+		BombC->Update(dt);
+		if (BombC->IsExploded())
+		{
+			m_Bombs.erase(iter++);
+		}
+		else
+		{
+			++iter;
+		}
+	}
+}
+
+void Application::RenderBombs()
+{
+	for (auto iter : m_Bombs)
+	{
+		iter->Render(m_Window);
 	}
 }

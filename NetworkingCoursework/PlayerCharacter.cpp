@@ -61,18 +61,22 @@ void PlayerCharacter::Init(int PlayerID, PlayerColour Colour, sf::Vector2f Start
 
 	//Animated Sprite Setup
 	m_FramesPerSecond = 8;
+
+	//bomb controllers
+	m_BombFireRate = 3.f;
+	m_BombExplosionDelay = 2.5f; //could be the same (only can have one bomb at a time)
+
+	//bug fixing
+	m_DoOnce = true;
 }
 
 void PlayerCharacter::Update(float dt)
 {
-
+	
 	//Move player
 	Movement(dt);
 
-	//update Debug info
-
-
-	
+	//update Debug info	
 	sf::Vector2f pos = m_Sprite.getPosition();
 	char temp[256];
 	sprintf_s(temp, "Player Position : X %.2f Y %.2f", pos.x, pos.y);
@@ -113,9 +117,24 @@ void PlayerCharacter::Movement(float dt)
 	UpdateSpriteState(dt);
 }
 
+
 void PlayerCharacter::Render(sf::RenderWindow* Window)
 {
 	Window->draw(m_Sprite);	
+}
+
+bool PlayerCharacter::BombRequests(float dt, float GameTime)
+{
+	if (m_BombClock.getElapsedTime().asSeconds() > m_BombFireRate)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			m_BombClock.restart();
+			return true;
+		}
+		
+	}
+	return false;
 }
 
 void PlayerCharacter::UpdateSprite(int SpritePos, float dt)

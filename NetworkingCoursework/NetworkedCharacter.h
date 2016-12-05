@@ -62,7 +62,6 @@ private:
 	sf::Vector2f m_LerpEndPos;
 
 	float m_ExpectedTimeToReachEnd;
-
-
+	
 };
 

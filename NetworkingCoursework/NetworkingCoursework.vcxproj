@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="DebugUI.cpp" />
     <ClCompile Include="ErrorSystem.cpp" />
     <ClCompile Include="NetworkedCharacter.cpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="DebugUI.h" />
     <ClInclude Include="ErrorSystem.h" />
     <ClInclude Include="NetworkedCharacter.h" />

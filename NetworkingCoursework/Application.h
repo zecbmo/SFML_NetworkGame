@@ -8,6 +8,7 @@
 #include <list>
 #include <time.h>  
 #include <chrono>
+#include "Bomb.h"
 
 #define SCREEN_MESSAGE_Y_OFFSET 40
 #define SCREEN_MESSAGE_X_OFFSET 10
@@ -19,6 +20,9 @@
 //Used for testing
 #define SERVER_IP "127.0.0.1"
 #define CLIENT_IP "127.0.0.1"
+
+//bomb consts
+
 
 //Update Packet and overloads
 struct PlayerUpdatePacket
@@ -42,7 +46,12 @@ struct WelcomePacketReply
 	sf::Uint32 PlayersChosenColour;
 	unsigned short UDPPort;
 };
-
+struct BombPacket
+{
+	float Xpos;
+	float Ypos;
+	float TimeToExplode;
+};
 sf::Packet& operator <<(sf::Packet& packet, const PlayerUpdatePacket& m);
 sf::Packet& operator >>(sf::Packet& packet, PlayerUpdatePacket& m);
 
@@ -52,6 +61,8 @@ sf::Packet& operator >>(sf::Packet& packet, WelcomePacket& m);
 sf::Packet& operator <<(sf::Packet& packet, const WelcomePacketReply& m);
 sf::Packet& operator >>(sf::Packet& packet, WelcomePacketReply& m);
 
+sf::Packet& operator <<(sf::Packet& packet, const BombPacket& m);
+sf::Packet& operator >>(sf::Packet& packet, BombPacket& m);
 
 class Application
 {
@@ -122,11 +133,18 @@ private:
 	//ServerFunctions
 	void ServerManagePacketsFromListener();
 	void ServerManagePacketsfromUDPSocket();
+	void ServerManagePacketsFromTCPSockets();
 
 	//ClientFuctions
 	void ClientManagePacketsfromUDPSocket();
+	void ClientManagePacketsfromTCPSocket();
 
-
+	//bombs
+	std::list<Bomb*> m_Bombs;
+	void CheckForAndCreateBombs(float dt);
+	void SendBombPacket(BombPacket BombCreationPacket, sf::TcpSocket* Socket);
+	void UpdateBombList(float dt);
+	void RenderBombs();
 	
 };
 
