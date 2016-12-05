@@ -53,7 +53,7 @@ private:
 	unsigned short m_OriginPort;
 	float m_ServerLatency;
 
-	TimePositionStruct m_PredictionList[2];
+	TimePositionStruct m_PredictionList[3];
 
 	void UpdateLerpValues(sf::Clock* Clock);
 	sf::Vector2f LerpFunction(sf::Vector2f Start, sf::Vector2f End, float Alpha);
