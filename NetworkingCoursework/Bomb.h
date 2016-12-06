@@ -33,7 +33,7 @@ public:
 	void Render(sf::RenderWindow* Window);
 	/*
 	*	Returns if the bomb has exploded or not
-	*	@returns true if bomb exploded
+	*	@return true if bomb exploded
 	*/
 	bool IsExploded() { return m_IsExploded; };
 

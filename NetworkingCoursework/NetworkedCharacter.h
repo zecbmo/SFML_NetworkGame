@@ -80,19 +80,32 @@ public:
 	
 
 private:
+	/*
+	*	Stores the Origin IP of the Character
+	*/
 	sf::IpAddress m_OriginIP;
+	/*
+	*	Stores the Origin Port of the Character
+	*/
 	unsigned short m_OriginPort;
+	/*
+	*	Not used. I should delete this too! I might use it later. It also probably has sentimental value
+	*/
 	float m_ServerLatency;
-
+	/*
+	*	The list of previous positons stored by the character	
+	*/
 	TimePositionStruct m_PredictionList[3];
 
-	void UpdateLerpValues(sf::Clock* Clock);
-	sf::Vector2f LerpFunction(sf::Vector2f Start, sf::Vector2f End, float Alpha);
+	
+	//Deprecitated
+	//void UpdateLerpValues(sf::Clock* Clock);
+	//sf::Vector2f LerpFunction(sf::Vector2f Start, sf::Vector2f End, float Alpha);
 
-	sf::Vector2f m_LerpStartPos;
-	sf::Vector2f m_LerpEndPos;
+	//sf::Vector2f m_LerpStartPos;
+	//sf::Vector2f m_LerpEndPos;
 
-	float m_ExpectedTimeToReachEnd;
+	//float m_ExpectedTimeToReachEnd;
 	
 };
 

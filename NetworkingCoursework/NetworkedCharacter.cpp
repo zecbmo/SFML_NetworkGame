@@ -113,8 +113,8 @@ void NetworkedCharacter::AddToPredictionList(float x, float y, float TimeStamp, 
 	//UpdateLerpValues(Clock);
 }
 
-void NetworkedCharacter::UpdateLerpValues(sf::Clock* Clock)
-{
+//void NetworkedCharacter::UpdateLerpValues(sf::Clock* Clock)
+//{
 	//The Current position will be the Starting point of the Lerp
 	//if (m_DoOnce)
 	//{
@@ -135,7 +135,7 @@ void NetworkedCharacter::UpdateLerpValues(sf::Clock* Clock)
 
 	//m_ExpectedTimeToReachEnd = Clock->getElapsedTime().asSeconds() + TimeDifferenceBetweenMessages;
 
-}
+//}
 //void NetworkedCharacter::UpdateLerpValues(sf::Clock* Clock)
 //{
 //	//The Current position will be the Starting point of the Lerp
@@ -171,10 +171,10 @@ void NetworkedCharacter::UpdateLerpValues(sf::Clock* Clock)
 //	m_ExpectedTimeToReachEnd = Clock->getElapsedTime().asSeconds() + TimeDifFromlastPacket;
 //
 //}
-sf::Vector2f NetworkedCharacter::LerpFunction(sf::Vector2f Start, sf::Vector2f End, float Alpha)
-{
+//sf::Vector2f NetworkedCharacter::LerpFunction(sf::Vector2f Start, sf::Vector2f End, float Alpha)
+//{
 	//v0 + t*(v1-v0)
 	//return Start + Alpha*(End - Start);
 	//(1 - t)*v0 + t*v1;
-	return (1-Alpha)*Start + Alpha*End;
-}
+	//return (1-Alpha)*Start + Alpha*End;
+//}
