@@ -5,9 +5,12 @@
 #include <stdio.h>
 #include <string>
 
-//Windows based error system
-//For quickly showing errors incase of out of range values etc
-//allows for custom prompts and ID sortin
+/*
+*	The Windows Based Error System
+*
+*	For quickly showing errors incase of out of range values etc
+*	allows for custom prompts and ID sortin
+*/
 
 namespace error
 {

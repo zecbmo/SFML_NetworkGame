@@ -16,10 +16,15 @@
 *	This is pushed on to a list of Text objects that the debug class will render
 *
 *
-*	Messages will be strings that appear on scree an delete after a small moment of time
+*	Messages will be strings that appear on screen and delete after a small moment of time - can be added in main game loop
 *
 */
 
+
+/*
+*	Timed Message Struct Keeps track of messages to appear in the "Message Box"
+*	After an elpased time will remove them and no longer be displayed
+*/
 struct TimedMessage
 {
 	TimedMessage(sf::Time DeleteTime, sf::Text Message)
@@ -31,7 +36,13 @@ struct TimedMessage
 	sf::Text m_Message;
 };
 
+/*
+*	The Text Colour
+*/
 enum DebugColour {kWhiteColour, kRedColour, kYellowColour, kBlueColour};
+
+
+
 class DebugUI
 {
 public:
@@ -39,12 +50,40 @@ public:
 	~DebugUI();
 
 	
-	
+	/*
+	*	Initialsier
+	*
+	*	@param Font File name for the font to be used
+	*   @param the positon of the message box x/y
+	*/
 	void Init(std::string FontFileName, int MessageBoxPosX, int MessageBoxPosY);
 
+	/*
+	*	Render funciton
+	*
+	*	@param Pointer to the SFML window
+	*/
 	void Render(sf::RenderWindow* Window);
+
 	void Update();
+	/*
+	*	Add To Debug Screen is an initialiser funciton that will display text on the screen.
+	*	It will return a pointer to a Text object that can be update to change what is said on the display in run time.
+	*
+	*	@param The Starting String
+	*	@param the x positon of the text display
+	*	@param the y positon of the text display
+	*	@param the Colour of the Text
+	*/
 	sf::Text* AddToDebugScreen(std::string InitialString, int XPos, int YPos, DebugColour Colour = kWhiteColour);
+
+	/*
+	*	Add message Will add a once off message to be displayed in the message box
+	*
+	*	@param The message to be displayd
+	*	@param The Colour
+	*	@param the time the message will stay on the screen - Set to default if not overriden
+	*/
 	void AddMessage(std::string Message, DebugColour Colour = kWhiteColour, float TimeDelay = MESSAGE_DELETE_DELAY);
 
 private:

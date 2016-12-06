@@ -18,6 +18,9 @@
 
 #define OUT //Tarcking out variables
 
+/*
+*	The Time Positon Struct keeps track of a positiona and When it Arrived
+*/
 struct TimePositionStruct
 {
 	sf::Vector2f Position;
@@ -32,19 +35,47 @@ public:
 
 	~NetworkedCharacter();
 
-	
+	/*
+	*	Updates the Networked Character
+	*	Prediciton happens here
+	*
+	*	@param Delta Time 
+	*	@param the current game time
+	*/
 	void Update(float dt, float GameTime);
 
+	/*
+	*	Getter and Setters for the IP of the networked Character
+	*/
 	sf::IpAddress GetIP() { return m_OriginIP; };
 	void SetIP(sf::IpAddress IP) { m_OriginIP = IP; };
+
+	/*
+	*	Getters and Setters for the Port of the networked Character
+	*/
 	unsigned short GetThePort() { return m_OriginPort; };
 	void SetThePort(unsigned short Port) { m_OriginPort = Port; };
 
+	/*
+	*	Directional Setter
+	*/
 	inline void SetDir(PlayerDirection Dir) { m_Dir = Dir; };
 
+	/*
+	*	I dont use these functions....
+	*/
 	inline void SetServerLatency(float ServerLat) { m_ServerLatency = m_ServerLatency; };
 	inline float GetServerLatency() { return m_ServerLatency;};
 
+	/*
+	*	When an update is recieved it is added to the list of positons - keeping track of the latest 3
+	*
+	*	@param the x positon of the character
+	*	@param the y positon of the character
+	*	@param the time the message was recieved
+	*	@param the Clock - depreciated - really should update this instead of writing this comment
+	*	@param Current X and Current Y - current positon of the character
+	*/
 	void AddToPredictionList(float x, float y, float TimeStamp, sf::Clock* Clock, float CurrentX, float CurrentY);
 	
 

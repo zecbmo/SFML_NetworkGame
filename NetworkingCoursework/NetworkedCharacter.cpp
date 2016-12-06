@@ -25,49 +25,49 @@ void NetworkedCharacter::Update(float dt, float GameTime)
 
 	/********************************  Convergence  ********************************/
 
-	////PrevPredictedPathVector = Last_KnownPos[1] – Last_KnownPos[2]
-	//sf::Vector2f PrevPredictedPathVec = Pos2 - Pos3;
+	//PrevPredictedPathVector = Last_KnownPos[1] – Last_KnownPos[2]
+	sf::Vector2f PrevPredictedPathVec = Pos2 - Pos3;
 
-	////PrevDeltaTime = Last_KnownTime[1] – Last_KnownTime[2]
-	//float  PrevDeltaTime = t2 - t3;
+	//PrevDeltaTime = Last_KnownTime[1] – Last_KnownTime[2]
+	float  PrevDeltaTime = t2 - t3;
 
-	////StartDeltaTime = Last_KnownTime[0] – Last_KnownTime[2]
-	//float StartDeltaTime  = t1 - t3;
+	//StartDeltaTime = Last_KnownTime[0] – Last_KnownTime[2]
+	float StartDeltaTime  = t1 - t3;
 
-	////PrevVelocity = PrevPredictedPathVector / PrevDeltaTime
-	//sf::Vector2f PrevVelocity = PrevPredictedPathVec / PrevDeltaTime;
+	//PrevVelocity = PrevPredictedPathVector / PrevDeltaTime
+	sf::Vector2f PrevVelocity = PrevPredictedPathVec / PrevDeltaTime;
 
-	////StartPos = Last_KnownPos[2] + StartDeltaTime * 	PrevVelocity
-	//sf::Vector2f StartPos = Pos3 + StartDeltaTime * PrevVelocity;
+	//StartPos = Last_KnownPos[2] + StartDeltaTime * 	PrevVelocity
+	sf::Vector2f StartPos = Pos3 + StartDeltaTime * PrevVelocity;
 
-	////CurrentDeltaTime = Now - Last_KnownTime[0]
-	//float CurrentDeltaTime = GameTime - t1;
+	//CurrentDeltaTime = Now - Last_KnownTime[0]
+	float CurrentDeltaTime = GameTime - t1;
 
-	////PredictedPathVector = Last_KnownPos[0] – 	Last_KnownPos[1]
-	//sf::Vector2f PredictedPathVec = Pos1 - Pos2;
+	//PredictedPathVector = Last_KnownPos[0] – 	Last_KnownPos[1]
+	sf::Vector2f PredictedPathVec = Pos1 - Pos2;
 
-	////DeltaTime = Last_KnownTime[0] – Last_KnownTime[1]
-	//float DeltaTime = t1 - t2;
+	//DeltaTime = Last_KnownTime[0] – Last_KnownTime[1]
+	float DeltaTime = t1 - t2;
 
-	////EndPos = Last_KnownPos[0] + CurrentDeltaTime * 	PredictedPathVector / DeltaTime
-	//sf::Vector2f EndPos = Pos1 + CurrentDeltaTime * (PredictedPathVec / DeltaTime);
+	//EndPos = Last_KnownPos[0] + CurrentDeltaTime * 	PredictedPathVector / DeltaTime
+	sf::Vector2f EndPos = Pos1 + DeltaTime * (PredictedPathVec / DeltaTime); //I swithced currentDelta time with delta time and it seems to work a lot smoother when latency is introduced
 
-	////LinearConvergenceVector = EndPos - StartPos
-	//sf::Vector2f LinearConvergence = EndPos - StartPos;
+	//LinearConvergenceVector = EndPos - StartPos
+	sf::Vector2f LinearConvergence = EndPos - StartPos;
 
-	////Velocity = LinearConvergenceVector / DeltaTime
-	//sf::Vector2f Velocity = LinearConvergence / DeltaTime;
+	//Velocity = LinearConvergenceVector / DeltaTime
+	sf::Vector2f Velocity = LinearConvergence / DeltaTime;
 
-	////NewPos = StartPos + CurrentDeltaTime * Velocity
-	//sf::Vector2f NewPos = StartPos + CurrentDeltaTime * Velocity;
+	//NewPos = StartPos + CurrentDeltaTime * Velocity
+	sf::Vector2f NewPos = StartPos + CurrentDeltaTime * Velocity;
 
 
 	/******************************** Dead reckoning ************************/
-	sf::Vector2f ppv = Pos1 - Pos2;
-	float dt2 = t1 - t2;
-	sf::Vector2f dv = ppv / dt2;
-	float ndt = GameTime - t2;
-	sf::Vector2f NewPos = Pos1 + ndt * dv;
+	//sf::Vector2f ppv = Pos1 - Pos2;
+	//float dt2 = t1 - t2;
+	//sf::Vector2f dv = ppv / dt2;
+	//float ndt = GameTime - t2;
+	//sf::Vector2f NewPos = Pos1 + ndt * dv;
 	/*************************************************************************/
 
 	m_Sprite.setPosition(NewPos);

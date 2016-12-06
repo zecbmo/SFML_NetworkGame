@@ -128,6 +128,7 @@ void Application::Update(float dt)
 	if (m_HasAuthority) //SERVER
 	{
 		ServerUpdate(); 
+		//Log time to screen
 		char temp[256];
 		sf::Time  CurrentTime = LocalGameClock.getElapsedTime();
 		sprintf_s(temp, "ServerTime : %f", CurrentTime.asSeconds());
@@ -137,6 +138,7 @@ void Application::Update(float dt)
 	else //CLIENT
 	{
 		ClientUpdate();
+		//Log time to screen
 		char temp[256];
 		sf::Time  CurrentTime = LocalGameClock.getElapsedTime();
 		float SyncedTime = CurrentTime.asSeconds() + TimeDifferenceSync;
@@ -146,13 +148,16 @@ void Application::Update(float dt)
 
 	//Update Game with local variables
 	PlayerCharacter.Update(dt);
+	//Update network character list
 	for (auto iter : m_NetworkCharacterList)
 	{
 		iter->Update(dt, LocalGameClock.getElapsedTime().asSeconds());
 	}
+	//See if player is placing bombs
 	CheckForAndCreateBombs(dt);
+	//update bombs
 	UpdateBombList(dt);
-
+	//Update the debug screen
 	DebugScreen.Update();
 }
 
@@ -266,10 +271,10 @@ void Application::ClientSetUp()
 		{
 			error::ErrorMessage("No Welcome Message Recieved!");
 		}
+		//Get The time comparasion from the server
 		float ServerGameTimeComparison = RecievedWelcomePacket.ServerGameTime - LocalGameClock.getElapsedTime().asSeconds();
 		//Sync clocks
 		float Latency = LatencyTCPRequest(m_ClientSideTCPSocket);
-
 		TimeDifferenceSync = Latency + ServerGameTimeComparison;
 
 		int ID = RecievedWelcomePacket.IDTracker;
@@ -470,7 +475,7 @@ void Application::ServerManagePacketsFromListener()
 
 			if (RecievePacket >> RecievedWelcomeReply)
 			{
-
+				//create the new character from client
 				NewCharacter->Init(m_PlayerIDTracker, (PlayerColour)RecievedWelcomeReply.PlayersChosenColour, pos, "Assets/Textures/Chars.png", DebugScreen);
 
 				NewCharacter->SetIP(NewClient->getRemoteAddress());
@@ -528,6 +533,7 @@ void Application::ServerManagePacketsfromUDPSocket()
 					m_UDPSocket.send(Packet, iter->GetIP(), iter->GetThePort());
 				}
 
+				//update the clients with own position as well
 				PlayerUpdatePacket PlayerPacketServer;
 
 				PlayerPacketServer.XPos = PlayerCharacter.GetXPos();
