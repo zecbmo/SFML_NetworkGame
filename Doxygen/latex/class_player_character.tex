@@ -1,0 +1,385 @@
+\hypertarget{class_player_character}{}\section{Player\+Character Class Reference}
+\label{class_player_character}\index{Player\+Character@{Player\+Character}}
+
+
+{\ttfamily \#include $<$Player\+Character.\+h$>$}
+
+Inheritance diagram for Player\+Character\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_player_character}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_player_character_af3ac12a41f58d860fb716138578bd95f}{Player\+Character} ()
+\item 
+\hyperlink{class_player_character_a4915330a9f743156b6860a97e6d68e28}{$\sim$\+Player\+Character} ()
+\item 
+void \hyperlink{class_player_character_a780111b98376a28607aa21207b4cf91a}{Init} (int Player\+ID, \hyperlink{_player_character_8h_a3fe9312ea357fba2db18ae32ffe5bca1}{Player\+Colour} Colour, sf\+::\+Vector2f Starting\+Pos, std\+::string Filename, \hyperlink{class_debug_u_i}{Debug\+UI} \&Debug\+Screen)
+\item 
+virtual void \hyperlink{class_player_character_a94bbe2b48d72236a6de6cb88f492da76}{Update} (float dt)
+\item 
+bool \hyperlink{class_player_character_a19081e3c59bc962efb9c5e2c7887c267}{Bomb\+Requests} (float dt, float Game\+Time)
+\item 
+void \hyperlink{class_player_character_af46ba459570710dcca3bfd6edb0cb7f8}{Render} (sf\+::\+Render\+Window $\ast$Window)
+\item 
+sf\+::\+Uint32 \hyperlink{class_player_character_a0c4259c1a2eec6c1669bf9ce9ff4a646}{Get\+Colour} ()
+\item 
+float \hyperlink{class_player_character_aaa03186b913d3ff5673dcde280284bf5}{Get\+X\+Pos} ()
+\item 
+float \hyperlink{class_player_character_a666a4e7b2a642704d7435beaccb89e6a}{Get\+Y\+Pos} ()
+\item 
+sf\+::\+Uint8 \hyperlink{class_player_character_aa7be8bfe26290d285725f0035de6e31c}{Get\+ID} ()
+\item 
+sf\+::\+Uint8 \hyperlink{class_player_character_af6704dd235bd347fb3f2c59a56015b51}{Get\+Dir} ()
+\item 
+float \hyperlink{class_player_character_a116a731d0dd7788b0e8b8100cd97928a}{Get\+Bomb\+Explosion\+Delay} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_player_character_a46f4559ce3efcab6bdd807ea2446fdfa}{Movement} (float dt)
+\item 
+void \hyperlink{class_player_character_ac465108f9f9337aba263be0676bed00b}{Update\+Sprite} (int Sprite\+Pos, float dt)
+\item 
+void \hyperlink{class_player_character_a9891ba485885beb2516f632a0a252e19}{Update\+Sprite\+State} (float dt)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+sf\+::\+Clock \hyperlink{class_player_character_a8fa9ea765016a1b910ab7007f2071edb}{m\+\_\+\+Bomb\+Clock}
+\item 
+float \hyperlink{class_player_character_ad8ccf5c2e03d93085bacaf60f2801fb7}{m\+\_\+\+Bomb\+Fire\+Rate}
+\item 
+float \hyperlink{class_player_character_a1f8732b219730a15a1666ec77e690a71}{m\+\_\+\+Bomb\+Explosion\+Delay}
+\item 
+sf\+::\+Texture \hyperlink{class_player_character_a0536f6e9f31ba651a9e207d88227f7b9}{m\+\_\+\+Texture}
+\item 
+sf\+::\+Sprite \hyperlink{class_player_character_a65d271da64e077967d283b37396d1549}{m\+\_\+\+Sprite}
+\item 
+int \hyperlink{class_player_character_aa71fe75fed5e2e7da416b8073f9b37da}{m\+\_\+\+Texture\+\_\+\+Width}
+\item 
+int \hyperlink{class_player_character_a544274318c87093392e763ecaee909d6}{m\+\_\+\+Texture\+\_\+\+Height}
+\item 
+int \hyperlink{class_player_character_a8bf6864a7377ccafda31172a6e5b009d}{m\+\_\+\+Sprite\+\_\+\+X\+\_\+\+Pos}
+\item 
+int \hyperlink{class_player_character_aea5fde273dee8afe18af848cc7865b50}{m\+\_\+\+Sprite\+\_\+\+Y\+\_\+\+Pos}
+\item 
+sf\+::\+Uint8 \hyperlink{class_player_character_ab3ae00b8837356dd6bdb86d90a941cad}{m\+\_\+\+ID}
+\item 
+\hyperlink{_player_character_8h_a3fe9312ea357fba2db18ae32ffe5bca1}{Player\+Colour} \hyperlink{class_player_character_ab1d44ae0ba6b9067f771fb9bc15a5a3b}{m\+\_\+\+Colour}
+\item 
+float \hyperlink{class_player_character_af4dcd4c48904565edaad6274897991a8}{m\+\_\+\+Speed}
+\item 
+\hyperlink{class_debug_u_i}{Debug\+UI} $\ast$ \hyperlink{class_player_character_ad4c2a95040c945081107dd20d2634137}{m\+\_\+\+Debug}
+\item 
+sf\+::\+Text $\ast$ \hyperlink{class_player_character_afd9f0e8831f894c5e621543ed3ff3d9c}{Player\+Position\+Text}
+\item 
+sf\+::\+Vector2f \hyperlink{class_player_character_a551aaac5dacaebbde21c5b6d46f5ec7d}{m\+\_\+\+Position}
+\item 
+float \hyperlink{class_player_character_a45f3c61083c1db2753500d8e217ca463}{m\+\_\+\+Frames\+Per\+Second}
+\item 
+float \hyperlink{class_player_character_accc3a138e2f16b4fd7e07637fa00ef78}{m\+\_\+\+Anim\+Counter}
+\item 
+int \hyperlink{class_player_character_aef80914837c7107dd3e9b8315c913160}{m\+\_\+\+Current\+Sprite\+Pos}
+\item 
+\hyperlink{_player_character_8h_af5420be377752b383864a169dfd7ba10}{Player\+Direction} \hyperlink{class_player_character_ac2d756b41be615f4fa31cbb99d405109}{m\+\_\+\+Dir}
+\item 
+bool \hyperlink{class_player_character_a2c8e033c4db7139172041a4476ef1534}{m\+\_\+\+Do\+Once}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The Player Character
+
+The Player Character is a player game object that can be controlled by the local user The Directional Pad controls movement and changes the player state. Also controls if the player can place bombs and interaction in the game This object will be accessed to get positon for sending to other clients 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_player_character_af3ac12a41f58d860fb716138578bd95f}{}\label{class_player_character_af3ac12a41f58d860fb716138578bd95f} 
+\index{Player\+Character@{Player\+Character}!Player\+Character@{Player\+Character}}
+\index{Player\+Character@{Player\+Character}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Player\+Character()}{PlayerCharacter()}}
+{\footnotesize\ttfamily Player\+Character\+::\+Player\+Character (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\hypertarget{class_player_character_a4915330a9f743156b6860a97e6d68e28}{}\label{class_player_character_a4915330a9f743156b6860a97e6d68e28} 
+\index{Player\+Character@{Player\+Character}!````~Player\+Character@{$\sim$\+Player\+Character}}
+\index{````~Player\+Character@{$\sim$\+Player\+Character}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{$\sim$\+Player\+Character()}{~PlayerCharacter()}}
+{\footnotesize\ttfamily Player\+Character\+::$\sim$\+Player\+Character (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_player_character_a19081e3c59bc962efb9c5e2c7887c267}{}\label{class_player_character_a19081e3c59bc962efb9c5e2c7887c267} 
+\index{Player\+Character@{Player\+Character}!Bomb\+Requests@{Bomb\+Requests}}
+\index{Bomb\+Requests@{Bomb\+Requests}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Bomb\+Requests()}{BombRequests()}}
+{\footnotesize\ttfamily bool Player\+Character\+::\+Bomb\+Requests (\begin{DoxyParamCaption}\item[{float}]{dt,  }\item[{float}]{Game\+Time }\end{DoxyParamCaption})}
+
+\hyperlink{class_bomb}{Bomb} Requests
+
+Controlls whether tha player can set bombs
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta} & time \\
+\hline
+{\em the} & current game time \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns true if the player plants a bomb 
+\end{DoxyReturn}
+\hypertarget{class_player_character_a116a731d0dd7788b0e8b8100cd97928a}{}\label{class_player_character_a116a731d0dd7788b0e8b8100cd97928a} 
+\index{Player\+Character@{Player\+Character}!Get\+Bomb\+Explosion\+Delay@{Get\+Bomb\+Explosion\+Delay}}
+\index{Get\+Bomb\+Explosion\+Delay@{Get\+Bomb\+Explosion\+Delay}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Get\+Bomb\+Explosion\+Delay()}{GetBombExplosionDelay()}}
+{\footnotesize\ttfamily float Player\+Character\+::\+Get\+Bomb\+Explosion\+Delay (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Gets the delay set for each bomb Plan would be that different power ups could increase/decrease bombs \hypertarget{class_player_character_a0c4259c1a2eec6c1669bf9ce9ff4a646}{}\label{class_player_character_a0c4259c1a2eec6c1669bf9ce9ff4a646} 
+\index{Player\+Character@{Player\+Character}!Get\+Colour@{Get\+Colour}}
+\index{Get\+Colour@{Get\+Colour}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Get\+Colour()}{GetColour()}}
+{\footnotesize\ttfamily sf\+::\+Uint32 Player\+Character\+::\+Get\+Colour (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Getter for the player colour \hypertarget{class_player_character_af6704dd235bd347fb3f2c59a56015b51}{}\label{class_player_character_af6704dd235bd347fb3f2c59a56015b51} 
+\index{Player\+Character@{Player\+Character}!Get\+Dir@{Get\+Dir}}
+\index{Get\+Dir@{Get\+Dir}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Get\+Dir()}{GetDir()}}
+{\footnotesize\ttfamily sf\+::\+Uint8 Player\+Character\+::\+Get\+Dir (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Getter For the player Direction \hypertarget{class_player_character_aa7be8bfe26290d285725f0035de6e31c}{}\label{class_player_character_aa7be8bfe26290d285725f0035de6e31c} 
+\index{Player\+Character@{Player\+Character}!Get\+ID@{Get\+ID}}
+\index{Get\+ID@{Get\+ID}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Get\+I\+D()}{GetID()}}
+{\footnotesize\ttfamily sf\+::\+Uint8 Player\+Character\+::\+Get\+ID (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Getter For the player ID \hypertarget{class_player_character_aaa03186b913d3ff5673dcde280284bf5}{}\label{class_player_character_aaa03186b913d3ff5673dcde280284bf5} 
+\index{Player\+Character@{Player\+Character}!Get\+X\+Pos@{Get\+X\+Pos}}
+\index{Get\+X\+Pos@{Get\+X\+Pos}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Get\+X\+Pos()}{GetXPos()}}
+{\footnotesize\ttfamily float Player\+Character\+::\+Get\+X\+Pos (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Getters and Setters for player positions \hypertarget{class_player_character_a666a4e7b2a642704d7435beaccb89e6a}{}\label{class_player_character_a666a4e7b2a642704d7435beaccb89e6a} 
+\index{Player\+Character@{Player\+Character}!Get\+Y\+Pos@{Get\+Y\+Pos}}
+\index{Get\+Y\+Pos@{Get\+Y\+Pos}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Get\+Y\+Pos()}{GetYPos()}}
+{\footnotesize\ttfamily float Player\+Character\+::\+Get\+Y\+Pos (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\hypertarget{class_player_character_a780111b98376a28607aa21207b4cf91a}{}\label{class_player_character_a780111b98376a28607aa21207b4cf91a} 
+\index{Player\+Character@{Player\+Character}!Init@{Init}}
+\index{Init@{Init}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Init()}{Init()}}
+{\footnotesize\ttfamily void Player\+Character\+::\+Init (\begin{DoxyParamCaption}\item[{int}]{Player\+ID,  }\item[{\hyperlink{_player_character_8h_a3fe9312ea357fba2db18ae32ffe5bca1}{Player\+Colour}}]{Colour,  }\item[{sf\+::\+Vector2f}]{Starting\+Pos,  }\item[{std\+::string}]{Filename,  }\item[{\hyperlink{class_debug_u_i}{Debug\+UI} \&}]{Debug\+Screen }\end{DoxyParamCaption})}
+
+The Initialiser for the player character
+
+
+\begin{DoxyParams}{Parameters}
+{\em Player} & Id that was given by the host \\
+\hline
+{\em The} & selected player colour \\
+\hline
+{\em The} & starting position \\
+\hline
+{\em the} & Filename location the textures for the player  to the debug screen for adding messages \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_player_character_a46f4559ce3efcab6bdd807ea2446fdfa}{}\label{class_player_character_a46f4559ce3efcab6bdd807ea2446fdfa} 
+\index{Player\+Character@{Player\+Character}!Movement@{Movement}}
+\index{Movement@{Movement}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Movement()}{Movement()}}
+{\footnotesize\ttfamily void Player\+Character\+::\+Movement (\begin{DoxyParamCaption}\item[{float}]{dt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+Updates the movement of the player character
+
+
+\begin{DoxyParams}{Parameters}
+{\em Delta} & time \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_player_character_af46ba459570710dcca3bfd6edb0cb7f8}{}\label{class_player_character_af46ba459570710dcca3bfd6edb0cb7f8} 
+\index{Player\+Character@{Player\+Character}!Render@{Render}}
+\index{Render@{Render}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Render()}{Render()}}
+{\footnotesize\ttfamily void Player\+Character\+::\+Render (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window $\ast$}]{Window }\end{DoxyParamCaption})}
+
+The Render Function
+
+
+\begin{DoxyParams}{Parameters}
+{\em Pointer} & to the S\+F\+ML window \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_player_character_a94bbe2b48d72236a6de6cb88f492da76}{}\label{class_player_character_a94bbe2b48d72236a6de6cb88f492da76} 
+\index{Player\+Character@{Player\+Character}!Update@{Update}}
+\index{Update@{Update}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Update()}{Update()}}
+{\footnotesize\ttfamily void Player\+Character\+::\+Update (\begin{DoxyParamCaption}\item[{float}]{dt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Update Function
+
+
+\begin{DoxyParams}{Parameters}
+{\em Delta} & Time \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_player_character_ac465108f9f9337aba263be0676bed00b}{}\label{class_player_character_ac465108f9f9337aba263be0676bed00b} 
+\index{Player\+Character@{Player\+Character}!Update\+Sprite@{Update\+Sprite}}
+\index{Update\+Sprite@{Update\+Sprite}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Update\+Sprite()}{UpdateSprite()}}
+{\footnotesize\ttfamily void Player\+Character\+::\+Update\+Sprite (\begin{DoxyParamCaption}\item[{int}]{Sprite\+Pos,  }\item[{float}]{dt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Animates the sprirte
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & position of the sprite to be at on the texture (Starting animation point) \\
+\hline
+{\em delta} & time \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_player_character_a9891ba485885beb2516f632a0a252e19}{}\label{class_player_character_a9891ba485885beb2516f632a0a252e19} 
+\index{Player\+Character@{Player\+Character}!Update\+Sprite\+State@{Update\+Sprite\+State}}
+\index{Update\+Sprite\+State@{Update\+Sprite\+State}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Update\+Sprite\+State()}{UpdateSpriteState()}}
+{\footnotesize\ttfamily void Player\+Character\+::\+Update\+Sprite\+State (\begin{DoxyParamCaption}\item[{float}]{dt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Updates the current state of the sprite (Controlled by the direction the player is moving)
+
+
+\begin{DoxyParams}{Parameters}
+{\em delta} & time \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_player_character_accc3a138e2f16b4fd7e07637fa00ef78}{}\label{class_player_character_accc3a138e2f16b4fd7e07637fa00ef78} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Anim\+Counter@{m\+\_\+\+Anim\+Counter}}
+\index{m\+\_\+\+Anim\+Counter@{m\+\_\+\+Anim\+Counter}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Anim\+Counter}{m\_AnimCounter}}
+{\footnotesize\ttfamily float Player\+Character\+::m\+\_\+\+Anim\+Counter\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_a8fa9ea765016a1b910ab7007f2071edb}{}\label{class_player_character_a8fa9ea765016a1b910ab7007f2071edb} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Bomb\+Clock@{m\+\_\+\+Bomb\+Clock}}
+\index{m\+\_\+\+Bomb\+Clock@{m\+\_\+\+Bomb\+Clock}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Bomb\+Clock}{m\_BombClock}}
+{\footnotesize\ttfamily sf\+::\+Clock Player\+Character\+::m\+\_\+\+Bomb\+Clock\hspace{0.3cm}{\ttfamily [protected]}}
+
+Members controlling the bomb timer/times \hypertarget{class_player_character_a1f8732b219730a15a1666ec77e690a71}{}\label{class_player_character_a1f8732b219730a15a1666ec77e690a71} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Bomb\+Explosion\+Delay@{m\+\_\+\+Bomb\+Explosion\+Delay}}
+\index{m\+\_\+\+Bomb\+Explosion\+Delay@{m\+\_\+\+Bomb\+Explosion\+Delay}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Bomb\+Explosion\+Delay}{m\_BombExplosionDelay}}
+{\footnotesize\ttfamily float Player\+Character\+::m\+\_\+\+Bomb\+Explosion\+Delay\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_ad8ccf5c2e03d93085bacaf60f2801fb7}{}\label{class_player_character_ad8ccf5c2e03d93085bacaf60f2801fb7} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Bomb\+Fire\+Rate@{m\+\_\+\+Bomb\+Fire\+Rate}}
+\index{m\+\_\+\+Bomb\+Fire\+Rate@{m\+\_\+\+Bomb\+Fire\+Rate}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Bomb\+Fire\+Rate}{m\_BombFireRate}}
+{\footnotesize\ttfamily float Player\+Character\+::m\+\_\+\+Bomb\+Fire\+Rate\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_ab1d44ae0ba6b9067f771fb9bc15a5a3b}{}\label{class_player_character_ab1d44ae0ba6b9067f771fb9bc15a5a3b} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Colour@{m\+\_\+\+Colour}}
+\index{m\+\_\+\+Colour@{m\+\_\+\+Colour}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Colour}{m\_Colour}}
+{\footnotesize\ttfamily \hyperlink{_player_character_8h_a3fe9312ea357fba2db18ae32ffe5bca1}{Player\+Colour} Player\+Character\+::m\+\_\+\+Colour\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_aef80914837c7107dd3e9b8315c913160}{}\label{class_player_character_aef80914837c7107dd3e9b8315c913160} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Current\+Sprite\+Pos@{m\+\_\+\+Current\+Sprite\+Pos}}
+\index{m\+\_\+\+Current\+Sprite\+Pos@{m\+\_\+\+Current\+Sprite\+Pos}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Current\+Sprite\+Pos}{m\_CurrentSpritePos}}
+{\footnotesize\ttfamily int Player\+Character\+::m\+\_\+\+Current\+Sprite\+Pos\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_ad4c2a95040c945081107dd20d2634137}{}\label{class_player_character_ad4c2a95040c945081107dd20d2634137} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Debug@{m\+\_\+\+Debug}}
+\index{m\+\_\+\+Debug@{m\+\_\+\+Debug}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Debug}{m\_Debug}}
+{\footnotesize\ttfamily \hyperlink{class_debug_u_i}{Debug\+UI}$\ast$ Player\+Character\+::m\+\_\+\+Debug\hspace{0.3cm}{\ttfamily [protected]}}
+
+Members controlling the debug screen/text \hypertarget{class_player_character_ac2d756b41be615f4fa31cbb99d405109}{}\label{class_player_character_ac2d756b41be615f4fa31cbb99d405109} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Dir@{m\+\_\+\+Dir}}
+\index{m\+\_\+\+Dir@{m\+\_\+\+Dir}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Dir}{m\_Dir}}
+{\footnotesize\ttfamily \hyperlink{_player_character_8h_af5420be377752b383864a169dfd7ba10}{Player\+Direction} Player\+Character\+::m\+\_\+\+Dir\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_a2c8e033c4db7139172041a4476ef1534}{}\label{class_player_character_a2c8e033c4db7139172041a4476ef1534} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Do\+Once@{m\+\_\+\+Do\+Once}}
+\index{m\+\_\+\+Do\+Once@{m\+\_\+\+Do\+Once}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Do\+Once}{m\_DoOnce}}
+{\footnotesize\ttfamily bool Player\+Character\+::m\+\_\+\+Do\+Once\hspace{0.3cm}{\ttfamily [protected]}}
+
+Wierd bug in S\+F\+ML that returns N\+AN when calling Get\+Sprite\+Position from the Networked Character Setting the position once from the net char seems to fix it \hypertarget{class_player_character_a45f3c61083c1db2753500d8e217ca463}{}\label{class_player_character_a45f3c61083c1db2753500d8e217ca463} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Frames\+Per\+Second@{m\+\_\+\+Frames\+Per\+Second}}
+\index{m\+\_\+\+Frames\+Per\+Second@{m\+\_\+\+Frames\+Per\+Second}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Frames\+Per\+Second}{m\_FramesPerSecond}}
+{\footnotesize\ttfamily float Player\+Character\+::m\+\_\+\+Frames\+Per\+Second\hspace{0.3cm}{\ttfamily [protected]}}
+
+Members controlling animation \hypertarget{class_player_character_ab3ae00b8837356dd6bdb86d90a941cad}{}\label{class_player_character_ab3ae00b8837356dd6bdb86d90a941cad} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+ID@{m\+\_\+\+ID}}
+\index{m\+\_\+\+ID@{m\+\_\+\+ID}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+ID}{m\_ID}}
+{\footnotesize\ttfamily sf\+::\+Uint8 Player\+Character\+::m\+\_\+\+ID\hspace{0.3cm}{\ttfamily [protected]}}
+
+Player Identifiers \hypertarget{class_player_character_a551aaac5dacaebbde21c5b6d46f5ec7d}{}\label{class_player_character_a551aaac5dacaebbde21c5b6d46f5ec7d} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Position@{m\+\_\+\+Position}}
+\index{m\+\_\+\+Position@{m\+\_\+\+Position}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Position}{m\_Position}}
+{\footnotesize\ttfamily sf\+::\+Vector2f Player\+Character\+::m\+\_\+\+Position\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_af4dcd4c48904565edaad6274897991a8}{}\label{class_player_character_af4dcd4c48904565edaad6274897991a8} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Speed@{m\+\_\+\+Speed}}
+\index{m\+\_\+\+Speed@{m\+\_\+\+Speed}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Speed}{m\_Speed}}
+{\footnotesize\ttfamily float Player\+Character\+::m\+\_\+\+Speed\hspace{0.3cm}{\ttfamily [protected]}}
+
+Speed in which player can move \hypertarget{class_player_character_a65d271da64e077967d283b37396d1549}{}\label{class_player_character_a65d271da64e077967d283b37396d1549} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Sprite@{m\+\_\+\+Sprite}}
+\index{m\+\_\+\+Sprite@{m\+\_\+\+Sprite}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Sprite}{m\_Sprite}}
+{\footnotesize\ttfamily sf\+::\+Sprite Player\+Character\+::m\+\_\+\+Sprite\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_a8bf6864a7377ccafda31172a6e5b009d}{}\label{class_player_character_a8bf6864a7377ccafda31172a6e5b009d} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Sprite\+\_\+\+X\+\_\+\+Pos@{m\+\_\+\+Sprite\+\_\+\+X\+\_\+\+Pos}}
+\index{m\+\_\+\+Sprite\+\_\+\+X\+\_\+\+Pos@{m\+\_\+\+Sprite\+\_\+\+X\+\_\+\+Pos}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Sprite\+\_\+\+X\+\_\+\+Pos}{m\_Sprite\_X\_Pos}}
+{\footnotesize\ttfamily int Player\+Character\+::m\+\_\+\+Sprite\+\_\+\+X\+\_\+\+Pos\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_aea5fde273dee8afe18af848cc7865b50}{}\label{class_player_character_aea5fde273dee8afe18af848cc7865b50} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Sprite\+\_\+\+Y\+\_\+\+Pos@{m\+\_\+\+Sprite\+\_\+\+Y\+\_\+\+Pos}}
+\index{m\+\_\+\+Sprite\+\_\+\+Y\+\_\+\+Pos@{m\+\_\+\+Sprite\+\_\+\+Y\+\_\+\+Pos}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Sprite\+\_\+\+Y\+\_\+\+Pos}{m\_Sprite\_Y\_Pos}}
+{\footnotesize\ttfamily int Player\+Character\+::m\+\_\+\+Sprite\+\_\+\+Y\+\_\+\+Pos\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_a0536f6e9f31ba651a9e207d88227f7b9}{}\label{class_player_character_a0536f6e9f31ba651a9e207d88227f7b9} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Texture@{m\+\_\+\+Texture}}
+\index{m\+\_\+\+Texture@{m\+\_\+\+Texture}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Texture}{m\_Texture}}
+{\footnotesize\ttfamily sf\+::\+Texture Player\+Character\+::m\+\_\+\+Texture\hspace{0.3cm}{\ttfamily [protected]}}
+
+Members controlling sprite and animation \hypertarget{class_player_character_a544274318c87093392e763ecaee909d6}{}\label{class_player_character_a544274318c87093392e763ecaee909d6} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Texture\+\_\+\+Height@{m\+\_\+\+Texture\+\_\+\+Height}}
+\index{m\+\_\+\+Texture\+\_\+\+Height@{m\+\_\+\+Texture\+\_\+\+Height}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Texture\+\_\+\+Height}{m\_Texture\_Height}}
+{\footnotesize\ttfamily int Player\+Character\+::m\+\_\+\+Texture\+\_\+\+Height\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_aa71fe75fed5e2e7da416b8073f9b37da}{}\label{class_player_character_aa71fe75fed5e2e7da416b8073f9b37da} 
+\index{Player\+Character@{Player\+Character}!m\+\_\+\+Texture\+\_\+\+Width@{m\+\_\+\+Texture\+\_\+\+Width}}
+\index{m\+\_\+\+Texture\+\_\+\+Width@{m\+\_\+\+Texture\+\_\+\+Width}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{m\+\_\+\+Texture\+\_\+\+Width}{m\_Texture\_Width}}
+{\footnotesize\ttfamily int Player\+Character\+::m\+\_\+\+Texture\+\_\+\+Width\hspace{0.3cm}{\ttfamily [protected]}}
+
+\hypertarget{class_player_character_afd9f0e8831f894c5e621543ed3ff3d9c}{}\label{class_player_character_afd9f0e8831f894c5e621543ed3ff3d9c} 
+\index{Player\+Character@{Player\+Character}!Player\+Position\+Text@{Player\+Position\+Text}}
+\index{Player\+Position\+Text@{Player\+Position\+Text}!Player\+Character@{Player\+Character}}
+\subsubsection{\texorpdfstring{Player\+Position\+Text}{PlayerPositionText}}
+{\footnotesize\ttfamily sf\+::\+Text$\ast$ Player\+Character\+::\+Player\+Position\+Text\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\hyperlink{_player_character_8h}{Player\+Character.\+h}\item 
+E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\hyperlink{_player_character_8cpp}{Player\+Character.\+cpp}\end{DoxyCompactItemize}

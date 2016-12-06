@@ -23,7 +23,7 @@ void NetworkedCharacter::Update(float dt, float GameTime)
 	float t2 = m_PredictionList[1].ServerTimeStampInSeconds;
 	float t3 = m_PredictionList[2].ServerTimeStampInSeconds;
 
-	/********************************  Convergence  ********************************/
+	/*********************************  Convergence  ********************************/
 
 	//PrevPredictedPathVector = Last_KnownPos[1] – Last_KnownPos[2]
 	sf::Vector2f PrevPredictedPathVec = Pos2 - Pos3;
@@ -62,13 +62,13 @@ void NetworkedCharacter::Update(float dt, float GameTime)
 	sf::Vector2f NewPos = StartPos + CurrentDeltaTime * Velocity;
 
 
-	/******************************** Dead reckoning ************************/
+	/********************************* Dead reckoning ************************/
 	//sf::Vector2f ppv = Pos1 - Pos2;
 	//float dt2 = t1 - t2;
 	//sf::Vector2f dv = ppv / dt2;
 	//float ndt = GameTime - t2;
 	//sf::Vector2f NewPos = Pos1 + ndt * dv;
-	/*************************************************************************/
+	/**************************************************************************/
 
 	m_Sprite.setPosition(NewPos);
 }

@@ -122,7 +122,7 @@ void DebugUI::Update()
 }
 void DebugUI::DeleteOldMessages()
 {
-	for (auto iter = m_MessageList.begin(); iter != m_MessageList.end(); /*nothing*/)
+	for (auto iter = m_MessageList.begin(); iter != m_MessageList.end(); /**nothing*/)
 	{
 		if ((*iter)->m_DeleteTime < m_DebugClock.getElapsedTime())
 		{

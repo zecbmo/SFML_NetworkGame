@@ -1,0 +1,77 @@
+\hypertarget{_application_8cpp}{}\section{E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\+Application.cpp File Reference}
+\label{_application_8cpp}\index{E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\+Application.\+cpp@{E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\+Application.\+cpp}}
+{\ttfamily \#include \char`\"{}Application.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8cpp_a1927b6f37732d425fc83c7692d45734e}{operator$<$$<$} (sf\+::\+Packet \&packet, const \hyperlink{struct_player_update_packet}{Player\+Update\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8cpp_a31219a5c20ae13324f27049e72553ae1}{operator$>$$>$} (sf\+::\+Packet \&packet, \hyperlink{struct_player_update_packet}{Player\+Update\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8cpp_a1fead84589616c9362f264733ae44ea3}{operator$<$$<$} (sf\+::\+Packet \&packet, const \hyperlink{struct_welcome_packet}{Welcome\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8cpp_a885c710b16f53c1871fb772be57a9dc0}{operator$>$$>$} (sf\+::\+Packet \&packet, \hyperlink{struct_welcome_packet}{Welcome\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8cpp_a5b83f6fabc94f792f5a8e31034fceb2c}{operator$<$$<$} (sf\+::\+Packet \&packet, const \hyperlink{struct_welcome_packet_reply}{Welcome\+Packet\+Reply} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8cpp_aae298b3166cf705f34fc4c585280d44c}{operator$>$$>$} (sf\+::\+Packet \&packet, \hyperlink{struct_welcome_packet_reply}{Welcome\+Packet\+Reply} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8cpp_a00479ced3f2e5d0e3f5f2cddc5339d24}{operator$<$$<$} (sf\+::\+Packet \&packet, const \hyperlink{struct_bomb_packet}{Bomb\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8cpp_ad411616afb529d5d63eb38875aeff5bb}{operator$>$$>$} (sf\+::\+Packet \&packet, \hyperlink{struct_bomb_packet}{Bomb\+Packet} \&m)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{_application_8cpp_a1927b6f37732d425fc83c7692d45734e}{}\label{_application_8cpp_a1927b6f37732d425fc83c7692d45734e} 
+\index{Application.\+cpp@{Application.\+cpp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Application.\+cpp@{Application.\+cpp}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{const \hyperlink{struct_player_update_packet}{Player\+Update\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+Packet Overloads
+
+Getting our structs to work with S\+F\+ML data types \hypertarget{_application_8cpp_a1fead84589616c9362f264733ae44ea3}{}\label{_application_8cpp_a1fead84589616c9362f264733ae44ea3} 
+\index{Application.\+cpp@{Application.\+cpp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Application.\+cpp@{Application.\+cpp}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{const \hyperlink{struct_welcome_packet}{Welcome\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8cpp_a5b83f6fabc94f792f5a8e31034fceb2c}{}\label{_application_8cpp_a5b83f6fabc94f792f5a8e31034fceb2c} 
+\index{Application.\+cpp@{Application.\+cpp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Application.\+cpp@{Application.\+cpp}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{const \hyperlink{struct_welcome_packet_reply}{Welcome\+Packet\+Reply} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8cpp_a00479ced3f2e5d0e3f5f2cddc5339d24}{}\label{_application_8cpp_a00479ced3f2e5d0e3f5f2cddc5339d24} 
+\index{Application.\+cpp@{Application.\+cpp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Application.\+cpp@{Application.\+cpp}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{const \hyperlink{struct_bomb_packet}{Bomb\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8cpp_a31219a5c20ae13324f27049e72553ae1}{}\label{_application_8cpp_a31219a5c20ae13324f27049e72553ae1} 
+\index{Application.\+cpp@{Application.\+cpp}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Application.\+cpp@{Application.\+cpp}}
+\subsubsection{\texorpdfstring{operator$>$$>$()}{operator>>()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$>$$>$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{\hyperlink{struct_player_update_packet}{Player\+Update\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8cpp_a885c710b16f53c1871fb772be57a9dc0}{}\label{_application_8cpp_a885c710b16f53c1871fb772be57a9dc0} 
+\index{Application.\+cpp@{Application.\+cpp}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Application.\+cpp@{Application.\+cpp}}
+\subsubsection{\texorpdfstring{operator$>$$>$()}{operator>>()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$>$$>$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{\hyperlink{struct_welcome_packet}{Welcome\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8cpp_aae298b3166cf705f34fc4c585280d44c}{}\label{_application_8cpp_aae298b3166cf705f34fc4c585280d44c} 
+\index{Application.\+cpp@{Application.\+cpp}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Application.\+cpp@{Application.\+cpp}}
+\subsubsection{\texorpdfstring{operator$>$$>$()}{operator>>()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$>$$>$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{\hyperlink{struct_welcome_packet_reply}{Welcome\+Packet\+Reply} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8cpp_ad411616afb529d5d63eb38875aeff5bb}{}\label{_application_8cpp_ad411616afb529d5d63eb38875aeff5bb} 
+\index{Application.\+cpp@{Application.\+cpp}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Application.\+cpp@{Application.\+cpp}}
+\subsubsection{\texorpdfstring{operator$>$$>$()}{operator>>()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$>$$>$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{\hyperlink{struct_bomb_packet}{Bomb\+Packet} \&}]{m }\end{DoxyParamCaption})}
+

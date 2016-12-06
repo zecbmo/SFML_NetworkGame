@@ -1,0 +1,124 @@
+\hypertarget{class_debug_u_i}{}\section{Debug\+UI Class Reference}
+\label{class_debug_u_i}\index{Debug\+UI@{Debug\+UI}}
+
+
+{\ttfamily \#include $<$Debug\+U\+I.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_debug_u_i_a4b3d4e2cb69eff1e1dd7c9fa4070601a}{Debug\+UI} ()
+\item 
+\hyperlink{class_debug_u_i_a9c08c8a56117976e4b3a6873248f1ced}{$\sim$\+Debug\+UI} ()
+\item 
+void \hyperlink{class_debug_u_i_aeff0255f8d3c420a10ed04e665555774}{Init} (std\+::string Font\+File\+Name, int Message\+Box\+PosX, int Message\+Box\+PosY)
+\item 
+void \hyperlink{class_debug_u_i_afdb947e24f6aef1fdbbed54ee275cd46}{Render} (sf\+::\+Render\+Window $\ast$Window)
+\item 
+void \hyperlink{class_debug_u_i_a9cd779b785ef78f23ad8fb0f9e5e469a}{Update} ()
+\item 
+sf\+::\+Text $\ast$ \hyperlink{class_debug_u_i_a16964cf8ac1665e9dda3e86cc84f0483}{Add\+To\+Debug\+Screen} (std\+::string Initial\+String, int X\+Pos, int Y\+Pos, \hyperlink{_debug_u_i_8h_a508b2d1c58a6b1f2f8d1afdab60a289d}{Debug\+Colour} Colour=\hyperlink{_debug_u_i_8h_a508b2d1c58a6b1f2f8d1afdab60a289da3ed70705a90c9992072dc9362e041515}{k\+White\+Colour})
+\item 
+void \hyperlink{class_debug_u_i_a8bdf11a44f6308e6ac7a3fb9e9c15cc6}{Add\+Message} (std\+::string Message, \hyperlink{_debug_u_i_8h_a508b2d1c58a6b1f2f8d1afdab60a289d}{Debug\+Colour} Colour=\hyperlink{_debug_u_i_8h_a508b2d1c58a6b1f2f8d1afdab60a289da3ed70705a90c9992072dc9362e041515}{k\+White\+Colour}, float Time\+Delay=\hyperlink{_debug_u_i_8h_acac3d24a4253633d5c6fc707dff813ca}{M\+E\+S\+S\+A\+G\+E\+\_\+\+D\+E\+L\+E\+T\+E\+\_\+\+D\+E\+L\+AY})
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+T\+HE D\+E\+B\+UG C\+L\+A\+SS
+
+The Debug class was created to help display Text on the screen Rather than creating alot of text objects and worrying about Wheter they should render or not The debug class will manage this for us. Add Text to the debug screen should be done in the init functions (W\+A\+R\+N\+I\+NG\+: N\+E\+V\+ER IN W\+H\+I\+LE L\+O\+OP) It will return a pointer to a text object that you can manage This is pushed on to a list of Text objects that the debug class will render
+
+Messages will be strings that appear on screen and delete after a small moment of time -\/ can be added in main game loop 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_debug_u_i_a4b3d4e2cb69eff1e1dd7c9fa4070601a}{}\label{class_debug_u_i_a4b3d4e2cb69eff1e1dd7c9fa4070601a} 
+\index{Debug\+UI@{Debug\+UI}!Debug\+UI@{Debug\+UI}}
+\index{Debug\+UI@{Debug\+UI}!Debug\+UI@{Debug\+UI}}
+\subsubsection{\texorpdfstring{Debug\+U\+I()}{DebugUI()}}
+{\footnotesize\ttfamily Debug\+U\+I\+::\+Debug\+UI (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\hypertarget{class_debug_u_i_a9c08c8a56117976e4b3a6873248f1ced}{}\label{class_debug_u_i_a9c08c8a56117976e4b3a6873248f1ced} 
+\index{Debug\+UI@{Debug\+UI}!````~Debug\+UI@{$\sim$\+Debug\+UI}}
+\index{````~Debug\+UI@{$\sim$\+Debug\+UI}!Debug\+UI@{Debug\+UI}}
+\subsubsection{\texorpdfstring{$\sim$\+Debug\+U\+I()}{~DebugUI()}}
+{\footnotesize\ttfamily Debug\+U\+I\+::$\sim$\+Debug\+UI (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_debug_u_i_a8bdf11a44f6308e6ac7a3fb9e9c15cc6}{}\label{class_debug_u_i_a8bdf11a44f6308e6ac7a3fb9e9c15cc6} 
+\index{Debug\+UI@{Debug\+UI}!Add\+Message@{Add\+Message}}
+\index{Add\+Message@{Add\+Message}!Debug\+UI@{Debug\+UI}}
+\subsubsection{\texorpdfstring{Add\+Message()}{AddMessage()}}
+{\footnotesize\ttfamily void Debug\+U\+I\+::\+Add\+Message (\begin{DoxyParamCaption}\item[{std\+::string}]{Message,  }\item[{\hyperlink{_debug_u_i_8h_a508b2d1c58a6b1f2f8d1afdab60a289d}{Debug\+Colour}}]{Colour = {\ttfamily \hyperlink{_debug_u_i_8h_a508b2d1c58a6b1f2f8d1afdab60a289da3ed70705a90c9992072dc9362e041515}{k\+White\+Colour}},  }\item[{float}]{Time\+Delay = {\ttfamily \hyperlink{_debug_u_i_8h_acac3d24a4253633d5c6fc707dff813ca}{M\+E\+S\+S\+A\+G\+E\+\_\+\+D\+E\+L\+E\+T\+E\+\_\+\+D\+E\+L\+AY}} }\end{DoxyParamCaption})}
+
+Add message Will add a once off message to be displayed in the message box
+
+
+\begin{DoxyParams}{Parameters}
+{\em The} & message to be displayd \\
+\hline
+{\em The} & Colour \\
+\hline
+{\em the} & time the message will stay on the screen -\/ Set to default if not overriden \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_debug_u_i_a16964cf8ac1665e9dda3e86cc84f0483}{}\label{class_debug_u_i_a16964cf8ac1665e9dda3e86cc84f0483} 
+\index{Debug\+UI@{Debug\+UI}!Add\+To\+Debug\+Screen@{Add\+To\+Debug\+Screen}}
+\index{Add\+To\+Debug\+Screen@{Add\+To\+Debug\+Screen}!Debug\+UI@{Debug\+UI}}
+\subsubsection{\texorpdfstring{Add\+To\+Debug\+Screen()}{AddToDebugScreen()}}
+{\footnotesize\ttfamily sf\+::\+Text $\ast$ Debug\+U\+I\+::\+Add\+To\+Debug\+Screen (\begin{DoxyParamCaption}\item[{std\+::string}]{Initial\+String,  }\item[{int}]{X\+Pos,  }\item[{int}]{Y\+Pos,  }\item[{\hyperlink{_debug_u_i_8h_a508b2d1c58a6b1f2f8d1afdab60a289d}{Debug\+Colour}}]{Colour = {\ttfamily \hyperlink{_debug_u_i_8h_a508b2d1c58a6b1f2f8d1afdab60a289da3ed70705a90c9992072dc9362e041515}{k\+White\+Colour}} }\end{DoxyParamCaption})}
+
+Add To Debug Screen is an initialiser funciton that will display text on the screen. It will return a pointer to a Text object that can be update to change what is said on the display in run time.
+
+
+\begin{DoxyParams}{Parameters}
+{\em The} & Starting String \\
+\hline
+{\em the} & x positon of the text display \\
+\hline
+{\em the} & y positon of the text display \\
+\hline
+{\em the} & Colour of the Text \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_debug_u_i_aeff0255f8d3c420a10ed04e665555774}{}\label{class_debug_u_i_aeff0255f8d3c420a10ed04e665555774} 
+\index{Debug\+UI@{Debug\+UI}!Init@{Init}}
+\index{Init@{Init}!Debug\+UI@{Debug\+UI}}
+\subsubsection{\texorpdfstring{Init()}{Init()}}
+{\footnotesize\ttfamily void Debug\+U\+I\+::\+Init (\begin{DoxyParamCaption}\item[{std\+::string}]{Font\+File\+Name,  }\item[{int}]{Message\+Box\+PosX,  }\item[{int}]{Message\+Box\+PosY }\end{DoxyParamCaption})}
+
+Initialsier
+
+
+\begin{DoxyParams}{Parameters}
+{\em Font} & File name for the font to be used \\
+\hline
+{\em the} & positon of the message box x/y \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_debug_u_i_afdb947e24f6aef1fdbbed54ee275cd46}{}\label{class_debug_u_i_afdb947e24f6aef1fdbbed54ee275cd46} 
+\index{Debug\+UI@{Debug\+UI}!Render@{Render}}
+\index{Render@{Render}!Debug\+UI@{Debug\+UI}}
+\subsubsection{\texorpdfstring{Render()}{Render()}}
+{\footnotesize\ttfamily void Debug\+U\+I\+::\+Render (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window $\ast$}]{Window }\end{DoxyParamCaption})}
+
+Render funciton
+
+
+\begin{DoxyParams}{Parameters}
+{\em Pointer} & to the S\+F\+ML window \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_debug_u_i_a9cd779b785ef78f23ad8fb0f9e5e469a}{}\label{class_debug_u_i_a9cd779b785ef78f23ad8fb0f9e5e469a} 
+\index{Debug\+UI@{Debug\+UI}!Update@{Update}}
+\index{Update@{Update}!Debug\+UI@{Debug\+UI}}
+\subsubsection{\texorpdfstring{Update()}{Update()}}
+{\footnotesize\ttfamily void Debug\+U\+I\+::\+Update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\hyperlink{_debug_u_i_8h}{Debug\+U\+I.\+h}\item 
+E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\hyperlink{_debug_u_i_8cpp}{Debug\+U\+I.\+cpp}\end{DoxyCompactItemize}

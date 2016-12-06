@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string>
 
-/*
+/**
 *	The Windows Based Error System
 *
 *	For quickly showing errors incase of out of range values etc

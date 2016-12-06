@@ -1,0 +1,139 @@
+\hypertarget{class_networked_character}{}\section{Networked\+Character Class Reference}
+\label{class_networked_character}\index{Networked\+Character@{Networked\+Character}}
+
+
+{\ttfamily \#include $<$Networked\+Character.\+h$>$}
+
+Inheritance diagram for Networked\+Character\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_networked_character}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_networked_character_ac09f304b62c04eaf431539e02b079954}{$\sim$\+Networked\+Character} ()
+\item 
+void \hyperlink{class_networked_character_aa445f5692ec410ff5a99ec6b6bf44e8d}{Update} (float dt, float Game\+Time)
+\item 
+sf\+::\+Ip\+Address \hyperlink{class_networked_character_a9b423c8353b00079e1c954704779ab31}{Get\+IP} ()
+\item 
+void \hyperlink{class_networked_character_a14c6d02226b324fa689dd758da7dcb34}{Set\+IP} (sf\+::\+Ip\+Address IP)
+\item 
+unsigned short \hyperlink{class_networked_character_af53749e10edfbbdb5ccbccd238d27091}{Get\+The\+Port} ()
+\item 
+void \hyperlink{class_networked_character_a306f2c2261fcdadbf53c7fadf3e85bdb}{Set\+The\+Port} (unsigned short Port)
+\item 
+void \hyperlink{class_networked_character_a41e76bfe05d14ebc9237031d149d6d0c}{Set\+Dir} (\hyperlink{_player_character_8h_af5420be377752b383864a169dfd7ba10}{Player\+Direction} Dir)
+\item 
+void \hyperlink{class_networked_character_a86f4c6a48fa251382bfd3d19872d4eb5}{Set\+Server\+Latency} (float Server\+Lat)
+\item 
+float \hyperlink{class_networked_character_a7692307cee60a4dec44a2a70f4b9f2c7}{Get\+Server\+Latency} ()
+\item 
+void \hyperlink{class_networked_character_a05c2f04191c8adc6dc733858403a39dd}{Add\+To\+Prediction\+List} (float x, float y, float Time\+Stamp, sf\+::\+Clock $\ast$Clock, float CurrentX, float CurrentY)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+The Networked Character
+
+The Net\+Worked Character will represent other players on the network playing the game For each client (Host included) the P\+L\+A\+Y\+ER chacter will represent the locally controlled character The clients own player character will control movements and updates that are then sent to the host The host will transmite all player changes to the clients When this packet is recieved it will update the N\+E\+T\+W\+O\+RK characters on the clients
+
+Essentially the Network Characters on clients will only Render other players and predict movement The Host will use these characters to control the game (whether a player is hit etc) And transmit this info to the clients 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_networked_character_ac09f304b62c04eaf431539e02b079954}{}\label{class_networked_character_ac09f304b62c04eaf431539e02b079954} 
+\index{Networked\+Character@{Networked\+Character}!````~Networked\+Character@{$\sim$\+Networked\+Character}}
+\index{````~Networked\+Character@{$\sim$\+Networked\+Character}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{$\sim$\+Networked\+Character()}{~NetworkedCharacter()}}
+{\footnotesize\ttfamily Networked\+Character\+::$\sim$\+Networked\+Character (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_networked_character_a05c2f04191c8adc6dc733858403a39dd}{}\label{class_networked_character_a05c2f04191c8adc6dc733858403a39dd} 
+\index{Networked\+Character@{Networked\+Character}!Add\+To\+Prediction\+List@{Add\+To\+Prediction\+List}}
+\index{Add\+To\+Prediction\+List@{Add\+To\+Prediction\+List}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{Add\+To\+Prediction\+List()}{AddToPredictionList()}}
+{\footnotesize\ttfamily void Networked\+Character\+::\+Add\+To\+Prediction\+List (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{Time\+Stamp,  }\item[{sf\+::\+Clock $\ast$}]{Clock,  }\item[{float}]{CurrentX,  }\item[{float}]{CurrentY }\end{DoxyParamCaption})}
+
+When an update is recieved it is added to the list of positons -\/ keeping track of the latest 3
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & x positon of the character \\
+\hline
+{\em the} & y positon of the character \\
+\hline
+{\em the} & time the message was recieved \\
+\hline
+{\em the} & Clock -\/ depreciated -\/ really should update this instead of writing this comment \\
+\hline
+{\em Current} & X and Current Y -\/ current positon of the character \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_networked_character_a9b423c8353b00079e1c954704779ab31}{}\label{class_networked_character_a9b423c8353b00079e1c954704779ab31} 
+\index{Networked\+Character@{Networked\+Character}!Get\+IP@{Get\+IP}}
+\index{Get\+IP@{Get\+IP}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{Get\+I\+P()}{GetIP()}}
+{\footnotesize\ttfamily sf\+::\+Ip\+Address Networked\+Character\+::\+Get\+IP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Getter and Setters for the IP of the networked Character \hypertarget{class_networked_character_a7692307cee60a4dec44a2a70f4b9f2c7}{}\label{class_networked_character_a7692307cee60a4dec44a2a70f4b9f2c7} 
+\index{Networked\+Character@{Networked\+Character}!Get\+Server\+Latency@{Get\+Server\+Latency}}
+\index{Get\+Server\+Latency@{Get\+Server\+Latency}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{Get\+Server\+Latency()}{GetServerLatency()}}
+{\footnotesize\ttfamily float Networked\+Character\+::\+Get\+Server\+Latency (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\hypertarget{class_networked_character_af53749e10edfbbdb5ccbccd238d27091}{}\label{class_networked_character_af53749e10edfbbdb5ccbccd238d27091} 
+\index{Networked\+Character@{Networked\+Character}!Get\+The\+Port@{Get\+The\+Port}}
+\index{Get\+The\+Port@{Get\+The\+Port}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{Get\+The\+Port()}{GetThePort()}}
+{\footnotesize\ttfamily unsigned short Networked\+Character\+::\+Get\+The\+Port (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Getters and Setters for the Port of the networked Character \hypertarget{class_networked_character_a41e76bfe05d14ebc9237031d149d6d0c}{}\label{class_networked_character_a41e76bfe05d14ebc9237031d149d6d0c} 
+\index{Networked\+Character@{Networked\+Character}!Set\+Dir@{Set\+Dir}}
+\index{Set\+Dir@{Set\+Dir}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{Set\+Dir()}{SetDir()}}
+{\footnotesize\ttfamily void Networked\+Character\+::\+Set\+Dir (\begin{DoxyParamCaption}\item[{\hyperlink{_player_character_8h_af5420be377752b383864a169dfd7ba10}{Player\+Direction}}]{Dir }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Directional Setter \hypertarget{class_networked_character_a14c6d02226b324fa689dd758da7dcb34}{}\label{class_networked_character_a14c6d02226b324fa689dd758da7dcb34} 
+\index{Networked\+Character@{Networked\+Character}!Set\+IP@{Set\+IP}}
+\index{Set\+IP@{Set\+IP}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{Set\+I\+P()}{SetIP()}}
+{\footnotesize\ttfamily void Networked\+Character\+::\+Set\+IP (\begin{DoxyParamCaption}\item[{sf\+::\+Ip\+Address}]{IP }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\hypertarget{class_networked_character_a86f4c6a48fa251382bfd3d19872d4eb5}{}\label{class_networked_character_a86f4c6a48fa251382bfd3d19872d4eb5} 
+\index{Networked\+Character@{Networked\+Character}!Set\+Server\+Latency@{Set\+Server\+Latency}}
+\index{Set\+Server\+Latency@{Set\+Server\+Latency}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{Set\+Server\+Latency()}{SetServerLatency()}}
+{\footnotesize\ttfamily void Networked\+Character\+::\+Set\+Server\+Latency (\begin{DoxyParamCaption}\item[{float}]{Server\+Lat }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+I dont use these functions.... \hypertarget{class_networked_character_a306f2c2261fcdadbf53c7fadf3e85bdb}{}\label{class_networked_character_a306f2c2261fcdadbf53c7fadf3e85bdb} 
+\index{Networked\+Character@{Networked\+Character}!Set\+The\+Port@{Set\+The\+Port}}
+\index{Set\+The\+Port@{Set\+The\+Port}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{Set\+The\+Port()}{SetThePort()}}
+{\footnotesize\ttfamily void Networked\+Character\+::\+Set\+The\+Port (\begin{DoxyParamCaption}\item[{unsigned short}]{Port }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\hypertarget{class_networked_character_aa445f5692ec410ff5a99ec6b6bf44e8d}{}\label{class_networked_character_aa445f5692ec410ff5a99ec6b6bf44e8d} 
+\index{Networked\+Character@{Networked\+Character}!Update@{Update}}
+\index{Update@{Update}!Networked\+Character@{Networked\+Character}}
+\subsubsection{\texorpdfstring{Update()}{Update()}}
+{\footnotesize\ttfamily void Networked\+Character\+::\+Update (\begin{DoxyParamCaption}\item[{float}]{dt,  }\item[{float}]{Game\+Time }\end{DoxyParamCaption})}
+
+Updates the Networked Character Prediciton happens here
+
+
+\begin{DoxyParams}{Parameters}
+{\em Delta} & Time \\
+\hline
+{\em the} & current game time \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\hyperlink{_networked_character_8h}{Networked\+Character.\+h}\item 
+E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\hyperlink{_networked_character_8cpp}{Networked\+Character.\+cpp}\end{DoxyCompactItemize}

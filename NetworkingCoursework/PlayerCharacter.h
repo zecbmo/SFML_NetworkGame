@@ -2,16 +2,16 @@
 #include<SFML\Graphics.hpp>
 #include "DebugUI.h"
 
-/*
+/**
 *	Colours that the player can be
 */
 enum PlayerColour { kRed, kPurple, kBlack, kGreen };
-/*
+/**
 *	Direcitons the player can move in. limited to N/S/E/W for now
 */
 enum PlayerDirection {kNorth, kSouth, kEast, kWest, kNorthEast, kNorthWest, kSouthEast, kSouthWest, kStill};
 
-/*
+/**
 *	The Player Character
 *
 *	The Player Character is a player game object that can be controlled by the local user
@@ -25,7 +25,7 @@ public:
 	PlayerCharacter();
 	~PlayerCharacter();
 
-	/*
+	/**
 	*	The Initialiser for the player character
 	*
 	*	@param Player Id that was given by the host
@@ -36,14 +36,14 @@ public:
 	*/
 	void Init(int PlayerID, PlayerColour Colour, sf::Vector2f StartingPos, std::string Filename, DebugUI& DebugScreen);
 	
-	/*
+	/**
 	*	Update Function
 	*
 	*	@param Delta Time
 	*/
 	virtual void Update(float dt);
 
-	/*
+	/**
 	*	Bomb Requests
 	*
 	*	Controlls whether tha player can set bombs
@@ -54,7 +54,7 @@ public:
 	*/
 	bool BombRequests(float dt, float GameTime);
 
-	/*
+	/**
 	*	The Render Function
 	*
 	*	@param Pointer to the SFML window
@@ -62,25 +62,25 @@ public:
 	void Render(sf::RenderWindow* Window);
 
 	//Getters and Setters
-	/*
+	/**
 	*	Getter for the player colour
 	*/
 	inline sf::Uint32 GetColour() { return (sf::Uint32)m_Colour; };
-	/*
+	/**
 	*	Getters and Setters for player positions
 	*/
 	inline float GetXPos() { return m_Sprite.getPosition().x; };
 	inline float GetYPos() { return m_Sprite.getPosition().y; };
-	/*
+	/**
 	*	Getter For the player ID
 	*/
 	inline sf::Uint8 GetID() { return m_ID; };
-	/*
+	/**
 	*	Getter For the player Direction
 	*/
 	inline sf::Uint8 GetDir() { return  (sf::Uint8)m_Dir; };
 
-	/*
+	/**
 	*	Gets the delay set for each bomb
 	*	Plan would be that different power ups could increase/decrease bombs
 	*/
@@ -89,7 +89,7 @@ public:
 
 protected:
 	//Updates	
-	/*
+	/**
 	*	Updates the movement of the player character
 	*
 	*	@param Delta time
@@ -97,7 +97,7 @@ protected:
 	virtual void Movement(float dt);
 	
 	//Bomb Clock
-	/*
+	/**
 	*	Members controlling the bomb timer/times
 	*/
 	sf::Clock m_BombClock;
@@ -106,7 +106,7 @@ protected:
 	
 
 	//rendering 
-	/*
+	/**
 	*	Members controlling sprite and animation
 	*/
 	sf::Texture m_Texture;
@@ -118,20 +118,20 @@ protected:
 	int m_Sprite_Y_Pos;
 
 	//player identifiers
-	/*
+	/**
 	*	Player Identifiers
 	*/
 	sf::Uint8 m_ID;	
 	PlayerColour m_Colour;
 
 	//speed which they can move
-	/*
+	/**
 	*	Speed in which player can move
 	*/
 	float m_Speed;	
 	
 	//Debug
-	/*
+	/**
 	*	Members controlling the debug screen/text
 	*/
 	DebugUI* m_Debug;
@@ -139,21 +139,21 @@ protected:
 	sf::Vector2f m_Position;
 
 	//Animation
-	/*
+	/**
 	*	Animates the sprirte
 	*
 	*	@param the position of the sprite to be at on the texture (Starting animation point)
 	*	@param delta time
 	*/
 	void UpdateSprite(int SpritePos,float dt);
-	/*
+	/**
 	*	Updates the current state of the sprite (Controlled by the direction the player is moving)
 	*
 	*	@param delta time
 	*/
 	void UpdateSpriteState(float dt);
 	//animating the sprites
-	/*
+	/**
 	*	Members controlling animation
 	*/
 	float m_FramesPerSecond;
@@ -161,7 +161,7 @@ protected:
 	int m_CurrentSpritePos;
 	PlayerDirection m_Dir;
 	
-	/*
+	/**
 	*	Wierd bug in SFML that returns NAN when calling GetSpritePosition from the Networked Character
 	*	Setting the position once from the net char seems to fix it
 	*/

@@ -1,0 +1,158 @@
+\hypertarget{_application_8h}{}\section{E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\+Application.h File Reference}
+\label{_application_8h}\index{E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\+Application.\+h@{E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\+Application.\+h}}
+{\ttfamily \#include $<$S\+F\+M\+L/\+Graphics.\+hpp$>$}\newline
+{\ttfamily \#include $<$S\+F\+M\+L/\+Network.\+hpp$>$}\newline
+{\ttfamily \#include \char`\"{}Player\+Character.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Networked\+Character.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Debug\+U\+I.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include \char`\"{}Bomb.\+h\char`\"{}}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_player_update_packet}{Player\+Update\+Packet}
+\item 
+struct \hyperlink{struct_welcome_packet}{Welcome\+Packet}
+\item 
+struct \hyperlink{struct_welcome_packet_reply}{Welcome\+Packet\+Reply}
+\item 
+struct \hyperlink{struct_bomb_packet}{Bomb\+Packet}
+\item 
+class \hyperlink{class_application}{Application}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_application_8h_a5f4fdb74c75f527423362a36de745f2d}{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+Y\+\_\+\+O\+F\+F\+S\+ET}~40
+\item 
+\#define \hyperlink{_application_8h_a8acc01f97a618e63c5b44a1c9e364d4b}{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+X\+\_\+\+O\+F\+F\+S\+ET}~10
+\item 
+\#define \hyperlink{_application_8h_aa783ba2a954b9e885feeecd8bb97234d}{S\+T\+A\+R\+T\+I\+N\+G\+\_\+\+O\+F\+F\+S\+ET}~100
+\item 
+\#define \hyperlink{_application_8h_a16268b7a7d9ce745ddd0302963bfb24d}{S\+E\+R\+V\+E\+R\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER}~7777
+\item 
+\#define \hyperlink{_application_8h_a1570e0d31c770df58acfc95aeb0777ec}{C\+L\+I\+E\+N\+T\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER}~7778
+\item 
+\#define \hyperlink{_application_8h_a28d06fc286f28044ed3380969700ff3f}{S\+E\+R\+V\+E\+R\+\_\+\+IP}~\char`\"{}127.\+0.\+0.\+1\char`\"{}
+\item 
+\#define \hyperlink{_application_8h_a79bded578bbeefef000af7abd711c5dc}{C\+L\+I\+E\+N\+T\+\_\+\+IP}~\char`\"{}127.\+0.\+0.\+1\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8h_a1927b6f37732d425fc83c7692d45734e}{operator$<$$<$} (sf\+::\+Packet \&packet, const \hyperlink{struct_player_update_packet}{Player\+Update\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8h_a31219a5c20ae13324f27049e72553ae1}{operator$>$$>$} (sf\+::\+Packet \&packet, \hyperlink{struct_player_update_packet}{Player\+Update\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8h_a1fead84589616c9362f264733ae44ea3}{operator$<$$<$} (sf\+::\+Packet \&packet, const \hyperlink{struct_welcome_packet}{Welcome\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8h_a885c710b16f53c1871fb772be57a9dc0}{operator$>$$>$} (sf\+::\+Packet \&packet, \hyperlink{struct_welcome_packet}{Welcome\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8h_a5b83f6fabc94f792f5a8e31034fceb2c}{operator$<$$<$} (sf\+::\+Packet \&packet, const \hyperlink{struct_welcome_packet_reply}{Welcome\+Packet\+Reply} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8h_aae298b3166cf705f34fc4c585280d44c}{operator$>$$>$} (sf\+::\+Packet \&packet, \hyperlink{struct_welcome_packet_reply}{Welcome\+Packet\+Reply} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8h_a00479ced3f2e5d0e3f5f2cddc5339d24}{operator$<$$<$} (sf\+::\+Packet \&packet, const \hyperlink{struct_bomb_packet}{Bomb\+Packet} \&m)
+\item 
+sf\+::\+Packet \& \hyperlink{_application_8h_ad411616afb529d5d63eb38875aeff5bb}{operator$>$$>$} (sf\+::\+Packet \&packet, \hyperlink{struct_bomb_packet}{Bomb\+Packet} \&m)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{_application_8h_a79bded578bbeefef000af7abd711c5dc}{}\label{_application_8h_a79bded578bbeefef000af7abd711c5dc} 
+\index{Application.\+h@{Application.\+h}!C\+L\+I\+E\+N\+T\+\_\+\+IP@{C\+L\+I\+E\+N\+T\+\_\+\+IP}}
+\index{C\+L\+I\+E\+N\+T\+\_\+\+IP@{C\+L\+I\+E\+N\+T\+\_\+\+IP}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{C\+L\+I\+E\+N\+T\+\_\+\+IP}{CLIENT\_IP}}
+{\footnotesize\ttfamily \#define C\+L\+I\+E\+N\+T\+\_\+\+IP~\char`\"{}127.\+0.\+0.\+1\char`\"{}}
+
+\hypertarget{_application_8h_a1570e0d31c770df58acfc95aeb0777ec}{}\label{_application_8h_a1570e0d31c770df58acfc95aeb0777ec} 
+\index{Application.\+h@{Application.\+h}!C\+L\+I\+E\+N\+T\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER@{C\+L\+I\+E\+N\+T\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER}}
+\index{C\+L\+I\+E\+N\+T\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER@{C\+L\+I\+E\+N\+T\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{C\+L\+I\+E\+N\+T\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER}{CLIENT\_PORT\_NUMBER}}
+{\footnotesize\ttfamily \#define C\+L\+I\+E\+N\+T\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER~7778}
+
+\hypertarget{_application_8h_a8acc01f97a618e63c5b44a1c9e364d4b}{}\label{_application_8h_a8acc01f97a618e63c5b44a1c9e364d4b} 
+\index{Application.\+h@{Application.\+h}!S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+X\+\_\+\+O\+F\+F\+S\+ET@{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+X\+\_\+\+O\+F\+F\+S\+ET}}
+\index{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+X\+\_\+\+O\+F\+F\+S\+ET@{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+X\+\_\+\+O\+F\+F\+S\+ET}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+X\+\_\+\+O\+F\+F\+S\+ET}{SCREEN\_MESSAGE\_X\_OFFSET}}
+{\footnotesize\ttfamily \#define S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+X\+\_\+\+O\+F\+F\+S\+ET~10}
+
+\hypertarget{_application_8h_a5f4fdb74c75f527423362a36de745f2d}{}\label{_application_8h_a5f4fdb74c75f527423362a36de745f2d} 
+\index{Application.\+h@{Application.\+h}!S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+Y\+\_\+\+O\+F\+F\+S\+ET@{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+Y\+\_\+\+O\+F\+F\+S\+ET}}
+\index{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+Y\+\_\+\+O\+F\+F\+S\+ET@{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+Y\+\_\+\+O\+F\+F\+S\+ET}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+Y\+\_\+\+O\+F\+F\+S\+ET}{SCREEN\_MESSAGE\_Y\_OFFSET}}
+{\footnotesize\ttfamily \#define S\+C\+R\+E\+E\+N\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+Y\+\_\+\+O\+F\+F\+S\+ET~40}
+
+\hypertarget{_application_8h_a28d06fc286f28044ed3380969700ff3f}{}\label{_application_8h_a28d06fc286f28044ed3380969700ff3f} 
+\index{Application.\+h@{Application.\+h}!S\+E\+R\+V\+E\+R\+\_\+\+IP@{S\+E\+R\+V\+E\+R\+\_\+\+IP}}
+\index{S\+E\+R\+V\+E\+R\+\_\+\+IP@{S\+E\+R\+V\+E\+R\+\_\+\+IP}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{S\+E\+R\+V\+E\+R\+\_\+\+IP}{SERVER\_IP}}
+{\footnotesize\ttfamily \#define S\+E\+R\+V\+E\+R\+\_\+\+IP~\char`\"{}127.\+0.\+0.\+1\char`\"{}}
+
+\hypertarget{_application_8h_a16268b7a7d9ce745ddd0302963bfb24d}{}\label{_application_8h_a16268b7a7d9ce745ddd0302963bfb24d} 
+\index{Application.\+h@{Application.\+h}!S\+E\+R\+V\+E\+R\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER@{S\+E\+R\+V\+E\+R\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER}}
+\index{S\+E\+R\+V\+E\+R\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER@{S\+E\+R\+V\+E\+R\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{S\+E\+R\+V\+E\+R\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER}{SERVER\_PORT\_NUMBER}}
+{\footnotesize\ttfamily \#define S\+E\+R\+V\+E\+R\+\_\+\+P\+O\+R\+T\+\_\+\+N\+U\+M\+B\+ER~7777}
+
+\hypertarget{_application_8h_aa783ba2a954b9e885feeecd8bb97234d}{}\label{_application_8h_aa783ba2a954b9e885feeecd8bb97234d} 
+\index{Application.\+h@{Application.\+h}!S\+T\+A\+R\+T\+I\+N\+G\+\_\+\+O\+F\+F\+S\+ET@{S\+T\+A\+R\+T\+I\+N\+G\+\_\+\+O\+F\+F\+S\+ET}}
+\index{S\+T\+A\+R\+T\+I\+N\+G\+\_\+\+O\+F\+F\+S\+ET@{S\+T\+A\+R\+T\+I\+N\+G\+\_\+\+O\+F\+F\+S\+ET}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{S\+T\+A\+R\+T\+I\+N\+G\+\_\+\+O\+F\+F\+S\+ET}{STARTING\_OFFSET}}
+{\footnotesize\ttfamily \#define S\+T\+A\+R\+T\+I\+N\+G\+\_\+\+O\+F\+F\+S\+ET~100}
+
+
+
+\subsection{Function Documentation}
+\hypertarget{_application_8h_a1927b6f37732d425fc83c7692d45734e}{}\label{_application_8h_a1927b6f37732d425fc83c7692d45734e} 
+\index{Application.\+h@{Application.\+h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{const \hyperlink{struct_player_update_packet}{Player\+Update\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+Packet Overloads
+
+Getting our structs to work with S\+F\+ML data types \hypertarget{_application_8h_a1fead84589616c9362f264733ae44ea3}{}\label{_application_8h_a1fead84589616c9362f264733ae44ea3} 
+\index{Application.\+h@{Application.\+h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{const \hyperlink{struct_welcome_packet}{Welcome\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8h_a5b83f6fabc94f792f5a8e31034fceb2c}{}\label{_application_8h_a5b83f6fabc94f792f5a8e31034fceb2c} 
+\index{Application.\+h@{Application.\+h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{const \hyperlink{struct_welcome_packet_reply}{Welcome\+Packet\+Reply} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8h_a00479ced3f2e5d0e3f5f2cddc5339d24}{}\label{_application_8h_a00479ced3f2e5d0e3f5f2cddc5339d24} 
+\index{Application.\+h@{Application.\+h}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{const \hyperlink{struct_bomb_packet}{Bomb\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8h_a31219a5c20ae13324f27049e72553ae1}{}\label{_application_8h_a31219a5c20ae13324f27049e72553ae1} 
+\index{Application.\+h@{Application.\+h}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{operator$>$$>$()}{operator>>()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$>$$>$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{\hyperlink{struct_player_update_packet}{Player\+Update\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8h_a885c710b16f53c1871fb772be57a9dc0}{}\label{_application_8h_a885c710b16f53c1871fb772be57a9dc0} 
+\index{Application.\+h@{Application.\+h}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{operator$>$$>$()}{operator>>()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$>$$>$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{\hyperlink{struct_welcome_packet}{Welcome\+Packet} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8h_aae298b3166cf705f34fc4c585280d44c}{}\label{_application_8h_aae298b3166cf705f34fc4c585280d44c} 
+\index{Application.\+h@{Application.\+h}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{operator$>$$>$()}{operator>>()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$>$$>$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{\hyperlink{struct_welcome_packet_reply}{Welcome\+Packet\+Reply} \&}]{m }\end{DoxyParamCaption})}
+
+\hypertarget{_application_8h_ad411616afb529d5d63eb38875aeff5bb}{}\label{_application_8h_ad411616afb529d5d63eb38875aeff5bb} 
+\index{Application.\+h@{Application.\+h}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!Application.\+h@{Application.\+h}}
+\subsubsection{\texorpdfstring{operator$>$$>$()}{operator>>()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily sf\+::\+Packet\& operator$>$$>$ (\begin{DoxyParamCaption}\item[{sf\+::\+Packet \&}]{packet,  }\item[{\hyperlink{struct_bomb_packet}{Bomb\+Packet} \&}]{m }\end{DoxyParamCaption})}
+

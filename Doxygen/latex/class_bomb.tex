@@ -1,0 +1,92 @@
+\hypertarget{class_bomb}{}\section{Bomb Class Reference}
+\label{class_bomb}\index{Bomb@{Bomb}}
+
+
+{\ttfamily \#include $<$Bomb.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_bomb_a70f8313ed21a19605a1ee6f65b6eaf18}{Bomb} (sf\+::\+Vector2f Position, float Time\+To\+Explode)
+\item 
+\hyperlink{class_bomb_acbb47327cfb2fa429887774ef3597965}{$\sim$\+Bomb} ()
+\item 
+void \hyperlink{class_bomb_a824b48a1cabce718db5b9b0c84452a35}{Update} (float dt, float Current\+Time)
+\item 
+void \hyperlink{class_bomb_af676fc06d6ede72f26fe4d7602e41ffa}{Render} (sf\+::\+Render\+Window $\ast$Window)
+\item 
+bool \hyperlink{class_bomb_a787ba65ab16bdcb5ff622ff2395e743f}{Is\+Exploded} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{class_bomb}{Bomb} class will Display bombs and the screen and blow up after a given time 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_bomb_a70f8313ed21a19605a1ee6f65b6eaf18}{}\label{class_bomb_a70f8313ed21a19605a1ee6f65b6eaf18} 
+\index{Bomb@{Bomb}!Bomb@{Bomb}}
+\index{Bomb@{Bomb}!Bomb@{Bomb}}
+\subsubsection{\texorpdfstring{Bomb()}{Bomb()}}
+{\footnotesize\ttfamily Bomb\+::\+Bomb (\begin{DoxyParamCaption}\item[{sf\+::\+Vector2f}]{Position,  }\item[{float}]{Time\+To\+Explode }\end{DoxyParamCaption})}
+
+The \hyperlink{class_bomb}{Bomb} Constructor
+
+
+\begin{DoxyParams}{Parameters}
+{\em Positon} & of the bomb to be placed \\
+\hline
+{\em The} & Server time in which it should explode \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_bomb_acbb47327cfb2fa429887774ef3597965}{}\label{class_bomb_acbb47327cfb2fa429887774ef3597965} 
+\index{Bomb@{Bomb}!````~Bomb@{$\sim$\+Bomb}}
+\index{````~Bomb@{$\sim$\+Bomb}!Bomb@{Bomb}}
+\subsubsection{\texorpdfstring{$\sim$\+Bomb()}{~Bomb()}}
+{\footnotesize\ttfamily Bomb\+::$\sim$\+Bomb (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_bomb_a787ba65ab16bdcb5ff622ff2395e743f}{}\label{class_bomb_a787ba65ab16bdcb5ff622ff2395e743f} 
+\index{Bomb@{Bomb}!Is\+Exploded@{Is\+Exploded}}
+\index{Is\+Exploded@{Is\+Exploded}!Bomb@{Bomb}}
+\subsubsection{\texorpdfstring{Is\+Exploded()}{IsExploded()}}
+{\footnotesize\ttfamily bool Bomb\+::\+Is\+Exploded (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns if the bomb has exploded or not \begin{DoxyReturn}{Returns}
+true if bomb exploded 
+\end{DoxyReturn}
+\hypertarget{class_bomb_af676fc06d6ede72f26fe4d7602e41ffa}{}\label{class_bomb_af676fc06d6ede72f26fe4d7602e41ffa} 
+\index{Bomb@{Bomb}!Render@{Render}}
+\index{Render@{Render}!Bomb@{Bomb}}
+\subsubsection{\texorpdfstring{Render()}{Render()}}
+{\footnotesize\ttfamily void Bomb\+::\+Render (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window $\ast$}]{Window }\end{DoxyParamCaption})}
+
+Render in the Selected Window
+
+
+\begin{DoxyParams}{Parameters}
+{\em The} & S\+F\+ML Window pointer \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_bomb_a824b48a1cabce718db5b9b0c84452a35}{}\label{class_bomb_a824b48a1cabce718db5b9b0c84452a35} 
+\index{Bomb@{Bomb}!Update@{Update}}
+\index{Update@{Update}!Bomb@{Bomb}}
+\subsubsection{\texorpdfstring{Update()}{Update()}}
+{\footnotesize\ttfamily void Bomb\+::\+Update (\begin{DoxyParamCaption}\item[{float}]{dt,  }\item[{float}]{Current\+Time }\end{DoxyParamCaption})}
+
+Update the bombs -\/ Checks if the should explode against the current time
+
+
+\begin{DoxyParams}{Parameters}
+{\em Delta} & time \\
+\hline
+{\em Current} & Game Time \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\hyperlink{_bomb_8h}{Bomb.\+h}\item 
+E\+:/\+Coding/\+S\+F\+M\+L\+\_\+\+Networked\+Game/\+Networking\+Coursework/\hyperlink{_bomb_8cpp}{Bomb.\+cpp}\end{DoxyCompactItemize}
